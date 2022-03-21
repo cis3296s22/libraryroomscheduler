@@ -27,8 +27,10 @@ def login(user, passW, dateString):
     driver.find_element(By.XPATH, "//button[@class='btn btn-default btn-login']").click()
 
     # If login fails check for error
+    
     try:
-        error = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//span[@class='logout']")))
+        # Wait 30 seconds to detect logout button (Could be login failed screen OR 2FA option)
+        error = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//span[@class='logout']")))
     except:
         print("Incorrect Credentials")
         return False
@@ -82,9 +84,10 @@ driver = webdriver.Chrome(service=service)
 try:
     user = input("Enter TU User: ")
     passW = getpass.getpass("Enter Password: ")
+    dateC = input("Enter Date of Booking [FORMAT MM-dd-YYYY]: ")
     room = input("Enter Room #: ")
     timeSlot = input("Enter Time [FORMAT H:MMpm or H:MMam]: ")
-    dateC = input("Enter Date [FORMAT MM-dd-YYYY]: ")
+    
     dateString = transformData(timeSlot, room, dateC)
     login(user, passW, dateString)
 
