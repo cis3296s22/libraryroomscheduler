@@ -16,7 +16,8 @@ import datetime
 import calendar
 
 
-def login(user, passW, dateString):
+def login(user, passW, dateString, roomSize):
+    
 
     # Login to tuportal
     driver.get("https://tuportal.temple.edu/")
@@ -35,8 +36,16 @@ def login(user, passW, dateString):
         print("Incorrect Credentials")
         return False
 
-    # Charles small rooms 
-    driver.get("https://charlesstudy.temple.edu/reserve/charles-small")
+
+    roomS = "https://charlesstudy.temple.edu/reserve/charles-"
+    roomS = roomS+"small" if roomSize=="small" else roomS+"large" if roomSize=="large" else roomS+"error"
+
+    print(roomS)
+    try:
+        driver.get(roomS)
+    except: 
+        print("Couldn't load library page")
+
 
     
     # Check to see if loaded - may be unavailable after first time caues temple pages make it unavailable even if not booked - only when clicked
@@ -80,16 +89,19 @@ service = Service(executable_path=ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service)
 
 
-
 try:
+    # User input (username, password, booking details)
     user = input("Enter TU User: ")
     passW = getpass.getpass("Enter Password: ")
     dateC = input("Enter Date of Booking [FORMAT MM-dd-YYYY]: ")
+    roomSize = (input("Enter Room Size: [LARGE or SMALL]: ")).lower()
     room = input("Enter Room #: ")
     timeSlot = input("Enter Time [FORMAT H:MMpm or H:MMam]: ")
-    
+
+   
+
     dateString = transformData(timeSlot, room, dateC)
-    login(user, passW, dateString)
+    login(user, passW, dateString, roomSize)
 
 
 except Exception as e:
