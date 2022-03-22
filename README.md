@@ -5,11 +5,11 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 ![This is a screenshot.](images/booking.png)
 
 # How to run
-- For MacOS users : Download the latest executable from the Release section on the right on GitHub. 
-
-```
-```
-- A login window should pop up.
+- For MacOS users :
+- Download the latest zip from the Release section on the right on GitHub. 
+- Extract the bookRoom.dmg file from the zip and open it
+- Right click on the bookRoom.app file inside and click 'Open'. A popup will be appear claiming the file is not safe.
+- Repeat the previous step. This time, the popup should have the option 'Open'. Click it and the application should load.
 
 # How to contribute
 Follow this project board to know the latest status of the project: [http://...]([https://github.com/cis3296s22/libraryroomscheduler/projects/2])  
@@ -24,7 +24,6 @@ pip3 install selenium
 pip3 install kivy
 pip3 install webdriver_manager
 pip3 install pyinstaller
-
 ```
 - Run main.py to login and book a room through the command line
 - Run bookRoom.py to login and book a room with a GUI 
@@ -42,7 +41,6 @@ pyinstaller --onefile -y --clean --windowed bookroom.spec
 pushd dist
 hdiutil create ./bookRoom.dmg -srcfolder bookRoom.app -ov
 popd
-
 ```
 
 <!-- CREATE THE EXE FOLDER CONTENTS -->
