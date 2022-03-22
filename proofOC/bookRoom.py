@@ -135,8 +135,8 @@ class TestApp(App):
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         service = Service(executable_path=ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=chrome_options)
-        # driver = webdriver.Chrome(service=service)
+        # driver = webdriver.Chrome(service=service, options=chrome_options)
+        driver = webdriver.Chrome(service=service)
  
         driver.get("https://tuportal.temple.edu/")
         driver.find_element(By.XPATH, "//input[@id='username']").send_keys(userN)
