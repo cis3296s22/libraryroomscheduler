@@ -34,8 +34,8 @@ pip3 install pyinstaller
 
 
 BUILD EXECUTABLE
-- From exe folder:
 
+- From exe folder:
 ```
 pyinstaller --onefile -y --clean --windowed bookroom.spec
 
@@ -45,7 +45,9 @@ popd
 
 ```
 
+<!-- CREATE THE EXE FOLDER CONTENTS -->
 <!-- pyinstaller --onefile -y --clean --windowed --name bookRoom --exclude-module _tkinter --exclude-module Tkinter --exclude-module enchant --exclude-module twisted ../proofOC/bookRoom.py -->
+<!-- Change line 23 of bookroom.spec so it looks like : exe = EXE(pyz, Tree('../proofOC/'), -->
 
  
  
