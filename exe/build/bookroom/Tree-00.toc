@@ -1,0 +1,11 @@
+('../proofOC/',
+ None,
+ [],
+ 'DATA',
+ [('.DS_Store', '../proofOC/.DS_Store', 'DATA'),
+  ('test.kv', '../proofOC/test.kv', 'DATA'),
+  ('bookRoom.py', '../proofOC/bookRoom.py', 'DATA'),
+  ('main.py', '../proofOC/main.py', 'DATA'),
+  ('__pycache__/bookRoom.cpython-310.pyc',
+   '../proofOC/__pycache__/bookRoom.cpython-310.pyc',
+   'DATA')])
