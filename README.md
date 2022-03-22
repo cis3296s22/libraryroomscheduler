@@ -5,16 +5,11 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 ![This is a screenshot.](images/booking.png)
 
 # How to run
-- Download the latest binary from the Release section on the right on GitHub.  
-- On the command line uncompress using
+- For MacOS users : Download the latest executable from the Release section on the right on GitHub. 
+
 ```
-tar -xzf  
 ```
-- On the command line run with
-```
-./hello
-```
-- You will see Hello World! on your terminal. 
+- A login window should pop up.
 
 # How to contribute
 Follow this project board to know the latest status of the project: [http://...]([https://github.com/cis3296s22/libraryroomscheduler/projects/2])  
@@ -38,3 +33,19 @@ pip3 install pyinstaller
 - bookRoom.py will not open the browser for the login process but after the booking details are entered and submitted, the browser opens and the user can see the room being booked. An actual reservation will be made (Check TUmail).
 
 
+BUILD EXECUTABLE
+- From exe folder:
+
+```
+pyinstaller --onefile -y --clean --windowed bookroom.spec
+pyinstaller --onefile -y --clean --windowed --name bookRoom --exclude-module _tkinter --exclude-module Tkinter --exclude-module enchant --exclude-module twisted /Users/ccho/Developer/libraryroomscheduler/proofOC/bookRoom.py
+
+pushd
+hdiutil create ./bookRoom.dmg -srcfolder bookRoom.app -ov
+popd
+
+```
+
+
+ 
+ 
