@@ -1,4 +1,4 @@
-#Proactive Student Persona (Guthrie):
+**Proactive Student Persona (Guthrie):**
 
 Michelle, 19, is a second year student at temple university but is technically a junior because 
 she got a 5 on every AP test offered at her high school. She is a bio major and Is currently taking 
