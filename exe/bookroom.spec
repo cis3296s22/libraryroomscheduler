@@ -4,7 +4,7 @@
 block_cipher = None
 
 
-a = Analysis(['/Users/ccho/Developer/libraryroomscheduler/proofOC/bookRoom.py'],
+a = Analysis(['../proofOC/bookRoom.py'],
              pathex=[],
              binaries=[],
              datas=[],
@@ -20,7 +20,7 @@ a = Analysis(['/Users/ccho/Developer/libraryroomscheduler/proofOC/bookRoom.py'],
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 
-exe = EXE(pyz, Tree('/Users/ccho/Developer/libraryroomscheduler/proofOC'),
+exe = EXE(pyz, Tree('../proofOC/'),
           a.scripts,
           a.binaries,
           a.zipfiles,

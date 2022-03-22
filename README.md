@@ -38,14 +38,14 @@ BUILD EXECUTABLE
 
 ```
 pyinstaller --onefile -y --clean --windowed bookroom.spec
-pyinstaller --onefile -y --clean --windowed --name bookRoom --exclude-module _tkinter --exclude-module Tkinter --exclude-module enchant --exclude-module twisted /Users/ccho/Developer/libraryroomscheduler/proofOC/bookRoom.py
 
-pushd
+pushd dist
 hdiutil create ./bookRoom.dmg -srcfolder bookRoom.app -ov
 popd
 
 ```
 
+<!-- pyinstaller --onefile -y --clean --windowed --name bookRoom --exclude-module _tkinter --exclude-module Tkinter --exclude-module enchant --exclude-module twisted ../proofOC/bookRoom.py -->
 
  
  
