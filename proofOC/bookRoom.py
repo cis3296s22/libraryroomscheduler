@@ -49,13 +49,16 @@ class TestApp(App):
 
     userN = passW = ""
 
-
-
     def transformData(self, timeS, roomNum, date):
-        select = datetime.datetime.strptime(date, "%m-%d-%Y").date()
+        result = list(map(lambda v: v.strip().lower(), [timeS, roomNum, date]))
+  
+        for i in result:
+            print("-- " + i + " --")
+
+        select = datetime.datetime.strptime(result[2], "%m-%d-%Y").date()
         fullDate = select.strftime("%B %d, %Y")
         weekday = calendar.day_name[select.weekday()]
-        selectTime = (timeS + " " + weekday + ", " + fullDate + " - " + roomNum + " - Available")
+        selectTime = (result[0] + " " + weekday + ", " + fullDate + " - " + result[1].lower() + " - Available")
         return selectTime
 
 
@@ -76,8 +79,6 @@ class TestApp(App):
 
         dateString = self.transformData(timeS, roomNum, date)
 
-
-
         # CHECK LOGIN SUCCESS
         try:
             # Wait 30 seconds to detect logout button (Could be login failed screen OR 2FA option)
@@ -86,9 +87,11 @@ class TestApp(App):
             print("Incorrect Credentials")
             return False
 
-
+        roomSize = roomSize.strip().lower()
         roomS = "https://charlesstudy.temple.edu/reserve/charles-"
         roomS = roomS+"small" if roomSize=="small" else roomS+"large" if roomSize=="large" else roomS+"error"
+        print(roomS)
+        
 
         try:
             driver.get(roomS)
@@ -153,10 +156,12 @@ class TestApp(App):
             self.userN = userN
             self.passW = passW
             print("Successful Login")
+            
         else:
             print("Login Error")
-            # popup = Popup(content=Label(text='Hello world'), auto_dismiss=True)
-            # popup.open()
+        
+        # Reset login attempt
+        self.loginFail = False
 
 
     def build(self):
