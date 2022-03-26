@@ -1,6 +1,6 @@
 # https://kivy.org/doc/stable/guide/packaging-osx.html
 
-from gettext import translation
+
 from selenium import webdriver
 
 
@@ -13,24 +13,16 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from kivy.app import App
-from kivy.lang import Builder
 
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.widget   import Widget
-from kivy.uix.label  import Label
-from kivy.uix.button import Button
 
 from selenium.webdriver.chrome.options import Options
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-from kivy.uix.popup import Popup
 
-import os
-import sys
-import getpass
 import time
 import datetime
 import calendar
 
+import loginWindow
 
 
 class BookingScreen(Screen):
@@ -165,14 +157,15 @@ class TestApp(App):
 
 
     def build(self):
-        self.loginScreen = LoginScreen(name='login')
+        # self.loginScreen = LoginScreen(name='login')
         self.bookingScreen = BookingScreen(name='booking')
-        self.sm.add_widget(self.loginScreen)
+        # self.sm.add_widget(self.loginScreen)
         self.sm.add_widget(self.bookingScreen)
         return self.sm
 
 if __name__ == '__main__':
-    TestApp().run()
+    if(loginWindow.login()):
+        TestApp().run()
 
     
 
