@@ -24,11 +24,12 @@ _Note: Visual Studio Code is the recommended editor for the Library Room Auto-Sc
 - Python 3.8 or higher is recommended to contribute
 - Clone this repo
 - (Recommended) Create a virtual environment
-  - In the main folder of this project, execute `python3 -m venv venv` on the command line to create the virtual environment
+  - In the main folder of this project, execute `python -m venv venv` on the command line (`python3` if you have 2.x installed as well) to create the virtual environment
   - Activate it!
     - Mac/Linux: `source ./venv/bin/activate`
+      - \*_note: csh and fish shell users use_ `activate.csh` _and_ `activate.fish` _respectively_\*
     - Windows: `.\venv\Scripts\activate`
-- Install the dependencies by executing `pip3 install -r requirements.txt` from the main directory
+- Install the dependencies by executing `pip install -r requirements.txt` from the main directory
 
 If you used a virtual environment, be sure to deactivate it by executing `deactivate` from the root of this project once you are finished.
 
