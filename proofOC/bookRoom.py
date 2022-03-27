@@ -50,7 +50,7 @@ class TestApp(App):
         select = datetime.datetime.strptime(result[2], "%m-%d-%Y").date()
         fullDate = select.strftime("%B %d, %Y")
         weekday = calendar.day_name[select.weekday()]
-        selectTime = (result[0] + " " + weekday + ", " + fullDate + " - " + result[1].lower() + " - Available")
+        selectTime = (result[0] + " " + weekday + ", " + fullDate + " - " + result[1] + " - Available")
         return selectTime
 
 
@@ -80,8 +80,7 @@ class TestApp(App):
             return False
 
         roomSize = roomSize.strip().lower()
-        roomS = "https://charlesstudy.temple.edu/reserve/charles-"
-        roomS = roomS+"small" if roomSize=="small" else roomS+"large" if roomSize=="large" else roomS+"error"
+        roomS = (f"https://charlesstudy.temple.edu/reserve/charles-{roomSize}")
         print(roomS)
         
 
