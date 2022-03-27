@@ -9,8 +9,6 @@ from selenium.webdriver.chrome.options import Options
 import time
 
 def login():
-    max = 6
-    attempt = 0
     userN = ""
     passW = ""
     chrome_options = Options()
@@ -21,43 +19,31 @@ def login():
 
     driver = webdriver.Chrome(service=service, options=chrome_options)
     driver.get("https://tuportal.temple.edu/")
-    
-
-    while(True):
-        
-        # Need to get user login info
-
-        # try:
-        #     attempts+=1
-        #     timeOption = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//span[@class='logout']")))
-        #     print("Successful Login")
-           
-    
-        #     driver.quit()
-        #     return userN, passW
-        # except:
-        #     tries = max-attempts
-        #     if(tries==0):
-        #         print("Abort.")
-        #         driver.quit()
-        #         return False
-        #     else:
-        #         tryString = "try" if (tries==1) else "tries"
-        #         print("Waiting: %d more %s..." % (tries, tryString))
-
-        try:   
-            timeOption = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//button[@class='btn btn-default btn-login']")))
+   
+    currentUrl = ""
+    while(currentUrl!="https://tuportal5.temple.edu/"):
+        currentUrl = driver.current_url
+        try:
             userN = driver.find_element(By.XPATH, "//input[@id='username']").get_attribute("value")
             passW = driver.find_element(By.XPATH, "//input[@id='password']").get_attribute("value")
-
         except:
-            print("Logged In")
+            print(userN, passW)
+
+    driver.quit()
+    return userN, passW
+        # try:   
+        #     timeOption = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//button[@class='btn btn-default btn-login']")))
             
-            return userN, passW
+        #     userN = driver.find_element(By.XPATH, "//input[@id='username']").get_attribute("value")
+        #     passW = driver.find_element(By.XPATH, "//input[@id='password']").get_attribute("value")
+        # except:
+        #     print("Logged In")
+        #     print(driver.current_url)
+        #     driver.quit()
+            
+            
+        
 
+# user, passW = login()
 
-
-# userN, passW = login()
-
-
-# print(userN + " " + passW)
+# print(user + passW)
