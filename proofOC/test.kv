@@ -38,6 +38,12 @@
         TextInput:
             id: date
             hint_text: 'Enter Date of Booking [FORMAT MM-dd-YYYY]: '
+        Button:
+            text: 'Show Calendar'
+            background_normal:''
+            background_color: (140/255.0,178/255.0,150/255.0,1)
+            on_press: 
+                app.showcal()
         TextInput:
             id: roomSize
             hint_text: 'Enter Room Size: [LARGE or SMALL]: '

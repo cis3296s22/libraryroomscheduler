@@ -12,13 +12,16 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from kivy.app import App
+#from kivy.app import App
 from kivy.lang import Builder
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget   import Widget
 from kivy.uix.label  import Label
 from kivy.uix.button import Button
+
+from kivymd.app import MDApp
+from kivymd.uix.picker import MDDatePicker
 
 from selenium.webdriver.chrome.options import Options
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
@@ -41,13 +44,17 @@ class LoginScreen(Screen):
 
 
 
-class TestApp(App):
+class TestApp(MDApp):
     sm = ScreenManager(transition = NoTransition())
     loginScreen = None
     bookingScreen = None
     loginFail = False
 
     userN = passW = ""
+
+    def showcal(self):
+        datedialog = MDDatePicker()
+        datedialog.open()
 
     def transformData(self, timeS, roomNum, date):
         result = list(map(lambda v: v.strip().lower(), [timeS, roomNum, date]))
