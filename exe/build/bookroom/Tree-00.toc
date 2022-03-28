@@ -6,6 +6,10 @@
   ('test.kv', '../proofOC/test.kv', 'DATA'),
   ('bookRoom.py', '../proofOC/bookRoom.py', 'DATA'),
   ('main.py', '../proofOC/main.py', 'DATA'),
+  ('loginWindow.py', '../proofOC/loginWindow.py', 'DATA'),
+  ('__pycache__/loginWindow.cpython-310.pyc',
+   '../proofOC/__pycache__/loginWindow.cpython-310.pyc',
+   'DATA'),
   ('__pycache__/bookRoom.cpython-310.pyc',
    '../proofOC/__pycache__/bookRoom.cpython-310.pyc',
    'DATA')])

@@ -1,74 +1,55 @@
 # https://kivy.org/doc/stable/guide/packaging-osx.html
 
-from gettext import translation
 from selenium import webdriver
-
-
 from selenium.webdriver.common.by import By
-
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
-
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from kivy.app import App
-from kivy.lang import Builder
-
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.widget   import Widget
-from kivy.uix.label  import Label
-from kivy.uix.button import Button
-
-from selenium.webdriver.chrome.options import Options
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-from kivy.uix.popup import Popup
 
-import os
-import sys
-import getpass
 import time
 import datetime
 import calendar
-
-
+import loginWindow
 
 class BookingScreen(Screen):
     pass
 
-class LoginScreen(Screen):
-    pass
-
-
-
 class TestApp(App):
-    sm = ScreenManager(transition = NoTransition())
-    loginScreen = None
-    bookingScreen = None
-    loginFail = False
 
-    userN = passW = ""
-
-    def transformData(self, timeS, roomNum, date):
-        result = list(map(lambda v: v.strip().lower(), [timeS, roomNum, date]))
+    userN=passW=""
+   
+    def build(self):
+        return BookingScreen()
   
-        for i in result:
-            print("-- " + i + " --")
-
-        select = datetime.datetime.strptime(result[2], "%m-%d-%Y").date()
-        fullDate = select.strftime("%B %d, %Y")
-        weekday = calendar.day_name[select.weekday()]
-        selectTime = (result[0] + " " + weekday + ", " + fullDate + " - " + result[1].lower() + " - Available")
-        return selectTime
-
+    def transformData(self, timeS, roomNum, date):
+        try:
+            result = list(map(lambda v: v.strip().lower(), [timeS, roomNum, date]))
+            if(not timeS or not roomNum or not date):
+                return None
+            select = datetime.datetime.strptime(result[2], "%m-%d-%Y").date()
+            fullDate = select.strftime("%B %d, %Y")
+            weekday = calendar.day_name[select.weekday()]
+            selectTime = (f"{result[0]} {weekday}, {fullDate} - {result[1]} - Available")
+            return selectTime
+        except:
+            return None
+        
 
     def bookRoom(self, roomSize, timeS, roomNum, date):
-        # SETUP DRIVER / LOGIN
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
+
+        roomSize = roomSize.strip().lower()
+        dateString = self.transformData(timeS, roomNum, date)
+        if(dateString==None or (roomSize!="small" and roomSize!="large")):
+            print('Incorrect Entry/Format')
+            return False
+
         service = Service(executable_path=ChromeDriverManager().install())
-        # driver = webdriver.Chrome(service=self.service, options=self.chrome_options)
         driver = webdriver.Chrome(service=service)
+
         # Login to tuportal
         driver.get("https://tuportal.temple.edu/")
         driver.maximize_window()
@@ -77,102 +58,48 @@ class TestApp(App):
         driver.find_element(By.XPATH, "//input[@id='password']").send_keys(self.passW)
         driver.find_element(By.XPATH, "//button[@class='btn btn-default btn-login']").click()
 
-        dateString = self.transformData(timeS, roomNum, date)
 
         # CHECK LOGIN SUCCESS
+        # Wait 30 seconds to detect logout button (Could be login failed screen OR 2FA option)
         try:
-            # Wait 30 seconds to detect logout button (Could be login failed screen OR 2FA option)
             error = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//span[@class='logout']")))
         except:
-            print("Incorrect Credentials")
             return False
+            
+        # Go to Charles Libary site (large/small)
+        driver.get(f"https://charlesstudy.temple.edu/reserve/charles-{roomSize}")
 
-        roomSize = roomSize.strip().lower()
-        roomS = "https://charlesstudy.temple.edu/reserve/charles-"
-        roomS = roomS+"small" if roomSize=="small" else roomS+"large" if roomSize=="large" else roomS+"error"
-        print(roomS)
-        
 
         try:
-            driver.get(roomS)
-        except: 
-            print("Couldn't load library page")
-
-
-        
-        # Check to see if loaded - may be unavailable after first time caues temple pages make it unavailable even if not booked - only when clicked
-        # 8:00am Thursday, March 17, 2022 - 383 - Unavailable/Padding
-        try:
-            pathOfTime = "//a[@aria-label='" + dateString + "']"
+            pathOfTime = (f"//a[@aria-label='{dateString}']")
             timeOption = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, pathOfTime)))
             timeOption.click()
         except:
-            print("Room unavailable")
+            print("Room Unavailable/Doesn't Exist")
             return False
-
 
         # Submit Booking
         submitButton = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='submit_times']")))
         submitButton.click()
 
+        # Log Out
+        jadaSucks = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//button[@id='s-lc-eq-bform-submit']")))
+        jadaSucks.click()
 
-        # LOGOUT
-        # logoutButton = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//a[@id='s-lc-eq-auth-lobtn']")))
-        # logoutButton.click()
-
-        # Make Another Booking - Element xpath ://a[@href='/reserve/charles-small'] [@class='btn btn-primary']
-        
-        yourMomButton = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//button[@id='s-lc-eq-bform-submit']")))
-        yourMomButton.click()
-
-        # Exit driver
+        # Exit Driver
         time.sleep(2)
         return True
-  
-    
-    def switchPage(self, screen):
-        self.sm.switch_to(screen)
 
-
-    def login(self, userN, passW):
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        service = Service(executable_path=ChromeDriverManager().install())
-        # driver = webdriver.Chrome(service=service, options=chrome_options)
-        driver = webdriver.Chrome(service=service)
- 
-        driver.get("https://tuportal.temple.edu/")
-        driver.find_element(By.XPATH, "//input[@id='username']").send_keys(userN)
-        driver.find_element(By.XPATH, "//input[@id='password']").send_keys(passW)
-        driver.find_element(By.XPATH, "//button[@class='btn btn-default btn-login']").click()
-
-        try:
-            error = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//span[@class='logout']")))
-        except:
-            self.loginFail = True
-
-        if(not self.loginFail):
-            self.switchPage(self.bookingScreen)
-            self.userN = userN
-            self.passW = passW
-            print("Successful Login")
-            
-        else:
-            print("Login Error")
-        
-        # Reset login attempt
-        self.loginFail = False
-
-
-    def build(self):
-        self.loginScreen = LoginScreen(name='login')
-        self.bookingScreen = BookingScreen(name='booking')
-        self.sm.add_widget(self.loginScreen)
-        self.sm.add_widget(self.bookingScreen)
-        return self.sm
 
 if __name__ == '__main__':
-    TestApp().run()
+    userN, passW = loginWindow.login()
+    if(userN!=None):
+        testApp = TestApp()
+        setattr(testApp, 'userN', userN)
+        setattr(testApp, 'passW', passW)
+        testApp.run()
+    else:
+        print("Minute has elapsed. Abort.")
 
     
 
