@@ -44,9 +44,16 @@ class TestApp(MDApp):
         time_selector.bind(on_cancel=self.on_time_cancel, on_save=self.on_time_save, time=self.get_time)
         time_selector.open()
 
+    def on_date_save(self, instance, value, date_range):
+        self.root.ids.date.text = str(value)
+
+    def on_date_cancel(self, instance, value):
+        pass
+
     def show_date_picker(self):
-         datedialog = MDDatePicker()
-         datedialog.open()
+        date_picker = MDDatePicker()
+        date_picker.bind(on_cancel=self.on_date_cancel, on_save=self.on_date_save)
+        date_picker.open()
 
     def transformData(self, timeS, roomNum, date):
         try:
@@ -54,7 +61,7 @@ class TestApp(MDApp):
             if(not timeS or not roomNum or not date):
                 return None
 
-            select = datetime.datetime.strptime(result[2], "%m-%d-%Y").date()
+            select = datetime.datetime.strptime(result[2], "%Y-%m-%d").date()
             fullDate = select.strftime("%B %d, %Y")
             weekday = calendar.day_name[select.weekday()]
 
