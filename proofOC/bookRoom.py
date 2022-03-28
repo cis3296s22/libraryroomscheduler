@@ -28,6 +28,9 @@ class TestApp(MDApp):
         return BookingScreen()
 
     def get_time(self, instance, time):
+        return time
+
+    def on_time_save(self, instance, time):
         formatted_time = time.strftime("%I:%M %p")
         self.root.ids.time.text = str(formatted_time)
 
@@ -37,7 +40,7 @@ class TestApp(MDApp):
 
     def show_time_picker(self):
         time_selector = MDTimePicker()
-        time_selector.bind(on_cancel=self.on_time_cancel, time=self.get_time)
+        time_selector.bind(on_cancel=self.on_time_cancel, on_save=self.on_time_save, time=self.get_time)
         time_selector.open()
   
     def transformData(self, timeS, roomNum, date):
