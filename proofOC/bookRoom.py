@@ -7,8 +7,10 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
+
+from kivymd.app import MDApp
+from kivymd.uix.picker import MDTimePicker
 
 import time
 import datetime
@@ -18,22 +20,44 @@ import loginWindow
 class BookingScreen(Screen):
     pass
 
-class TestApp(App):
+class TestApp(MDApp):
 
     userN=passW=""
    
     def build(self):
         return BookingScreen()
+
+    def get_time(self, instance, time):
+        return time
+
+    def on_time_save(self, instance, time):
+        formatted_time = time.strftime("%I:%M %p")
+        self.root.ids.time.text = str(formatted_time)
+
+    def on_time_cancel(self, instance, time):
+        # when canceling time selection from the widget don't do anything
+        pass
+
+    def show_time_picker(self):
+        time_selector = MDTimePicker()
+        time_selector.bind(on_cancel=self.on_time_cancel, on_save=self.on_time_save, time=self.get_time)
+        time_selector.open()
   
     def transformData(self, timeS, roomNum, date):
         try:
             result = list(map(lambda v: v.strip().lower(), [timeS, roomNum, date]))
             if(not timeS or not roomNum or not date):
                 return None
+
             select = datetime.datetime.strptime(result[2], "%m-%d-%Y").date()
             fullDate = select.strftime("%B %d, %Y")
             weekday = calendar.day_name[select.weekday()]
-            selectTime = (f"{result[0]} {weekday}, {fullDate} - {result[1]} - Available")
+
+            time = "".join(result[0].split()) # removes any inner whitespace
+            time = time if time[0] != '0' else time[1:] # removes leading zero if present
+
+            selectTime = (f"{time} {weekday}, {fullDate} - {result[1]} - Available")
+            print(selectTime)
             return selectTime
         except:
             return None

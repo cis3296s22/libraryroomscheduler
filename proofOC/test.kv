@@ -17,9 +17,22 @@
         TextInput:
             id: roomNumber
             hint_text: 'Room #: '
-        TextInput:
-            id: time
-            hint_text: 'Time: [H:MMpm or H:MMam]'
+
+        GridLayout:
+            cols: 2
+            AnchorLayout:
+                anchor_x: 'left'
+                MDRaisedButton:
+                    text: 'Select Time'
+                    on_release: app.show_time_picker()
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+
+            AnchorLayout:  
+                anchor_x: 'right'  
+                MDLabel:
+                    id: time
+                    text: 'No time chosen'
+                    halign: 'right'
 
         Button:
             id: submit
