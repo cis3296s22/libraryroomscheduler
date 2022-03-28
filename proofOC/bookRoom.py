@@ -11,6 +11,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 
 from kivymd.app import MDApp
 from kivymd.uix.picker import MDTimePicker
+from kivymd.uix.picker import MDDatePicker
 
 import time
 import datetime
@@ -42,7 +43,11 @@ class TestApp(MDApp):
         time_selector = MDTimePicker()
         time_selector.bind(on_cancel=self.on_time_cancel, on_save=self.on_time_save, time=self.get_time)
         time_selector.open()
-  
+
+    def show_date_picker(self):
+         datedialog = MDDatePicker()
+         datedialog.open()
+
     def transformData(self, timeS, roomNum, date):
         try:
             result = list(map(lambda v: v.strip().lower(), [timeS, roomNum, date]))
