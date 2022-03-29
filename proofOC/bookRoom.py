@@ -26,6 +26,9 @@ class TestApp(MDApp):
     userN=passW=""
    
     def build(self):
+        self.theme_cls.primary_palette = "Green"
+        self.theme_cls.primary_hue = "200" 
+        self.theme_cls.theme_style = "Dark" 
         return BookingScreen()
 
     def get_time(self, instance, time):
