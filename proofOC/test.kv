@@ -6,10 +6,23 @@
         pos_hint: {'center_x' : .5, 'center_y': .5}  
         size_hint: None, None
         size: root.width * .5, root.width * .5
-  
-        TextInput:
-            id: date
-            hint_text: 'Date of Booking: [MM-dd-YYYY]'
+
+        GridLayout:
+            cols: 2
+            AnchorLayout:
+                anchor_x: 'left'
+                MDRaisedButton:
+                    text: 'Select Date'
+                    on_release: app.show_date_picker()
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+
+            AnchorLayout:  
+                anchor_x: 'right'  
+                MDLabel:
+                    id: date
+                    text: 'No date chosen'
+                    halign: 'right'
+
         TextInput:
             id: roomSize
             hint_text: 'Room Size: [LARGE or SMALL]'
