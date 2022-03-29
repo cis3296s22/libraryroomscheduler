@@ -11,7 +11,8 @@
             cols: 2
             AnchorLayout:
                 anchor_x: 'left'
-                MDRaisedButton:
+                MDFillRoundFlatButton:
+                    font_size: "18sp"
                     text: 'Select Date'
                     on_release: app.show_date_picker()
                     pos_hint: {'center_x': .5, 'center_y': .5}
@@ -19,6 +20,7 @@
             AnchorLayout:  
                 anchor_x: 'right'  
                 MDLabel:
+                    font_size: "20sp"
                     id: date
                     text: 'No date chosen'
                     halign: 'right'
@@ -35,7 +37,8 @@
             cols: 2
             AnchorLayout:
                 anchor_x: 'left'
-                MDRaisedButton:
+                MDFillRoundFlatButton:
+                    font_size: "18sp"
                     text: 'Select Time'
                     on_release: app.show_time_picker()
                     pos_hint: {'center_x': .5, 'center_y': .5}
@@ -43,6 +46,7 @@
             AnchorLayout:  
                 anchor_x: 'right'  
                 MDLabel:
+                    font_size: "20sp"
                     id: time
                     text: 'No time chosen'
                     halign: 'right'

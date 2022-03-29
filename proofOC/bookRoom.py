@@ -9,6 +9,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 
+from kivy.utils import get_color_from_hex
+
 from kivymd.app import MDApp
 from kivymd.uix.picker import MDTimePicker
 from kivymd.uix.picker import MDDatePicker
@@ -26,6 +28,9 @@ class TestApp(MDApp):
     userN=passW=""
    
     def build(self):
+        self.theme_cls.primary_palette = "Green"
+        self.theme_cls.primary_hue = "200" 
+        self.theme_cls.theme_style = "Dark" 
         return BookingScreen()
 
     def get_time(self, instance, time):
@@ -40,7 +45,7 @@ class TestApp(MDApp):
         pass
 
     def show_time_picker(self):
-        time_selector = MDTimePicker()
+        time_selector = MDTimePicker(accent_color=get_color_from_hex("#BEBEBE"))
         time_selector.bind(on_cancel=self.on_time_cancel, on_save=self.on_time_save, time=self.get_time)
         time_selector.open()
 
