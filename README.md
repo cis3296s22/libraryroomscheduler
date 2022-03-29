@@ -15,7 +15,7 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 
 - For Windows users :
 - Clone the repository (using git clone command)
-- Make sure python is installed and can be run from the command line
+- Make sure python 3.6+ is installed and can be run from the command line
 - Navigate to the location your cloned repo is (use the cd command)
 - Run the bookRoom.py script by typing "python bookRoom.py" into the command line
 - The application should load
