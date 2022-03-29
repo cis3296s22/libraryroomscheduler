@@ -13,6 +13,13 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 - Right click on the bookRoom.app file inside and click 'Open'. A popup will be appear claiming the file is not safe.
 - Repeat the previous step. This time, the popup should have the option 'Open'. Click it and the application should load.
 
+- For Windows users :
+- Clone the repository (using git clone command)
+- Make sure python is installed and can be run from the command line
+- Navigate to the location your cloned repo is (use the cd command)
+- Run the bookRoom.py script by typing "python bookRoom.py" into the command line
+- The application should load
+
 # How to contribute
 
 Follow this project board to know the latest status of the project: [http://...]([https://github.com/cis3296s22/libraryroomscheduler/projects/2])
