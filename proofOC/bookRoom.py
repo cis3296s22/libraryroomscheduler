@@ -96,10 +96,11 @@ class TestApp(MDApp):
             return False
 
         # save booking to file
+        repo = RepoCommunicator(repoUrl, self.repoPath)
+
         bookings = BookingBuilder(self.userN, self.passW)
         bookings.addBooking(dateString, roomSize)
 
-        repo = RepoCommunicator(repoUrl, self.repoPath)
         repo.addFile(bookings.fileName)
         repo.pushData()
 
