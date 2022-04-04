@@ -15,6 +15,9 @@ import time
 import datetime
 import calendar
 
+from RepoCommunicator import RepoCommunicator, remoteRepoConfigured
+from BookingBuilder import BookingBuilder
+
 
 def login(user, passW, dateString, roomSize):
     
@@ -91,6 +94,11 @@ driver = webdriver.Chrome(service=service)
 
 try:
     # User input (username, password, booking details)
+    repoPath = "local_repo"
+    repoUrl = remoteRepoConfigured(repoPath)
+    if not repoUrl:
+        repoUrl = input("Enter clone URL for GitHub repo: ")
+
     user = input("Enter TU User: ")
     passW = getpass.getpass("Enter Password: ")
     dateC = input("Enter Date of Booking [FORMAT MM-dd-YYYY]: ")
@@ -98,9 +106,16 @@ try:
     room = input("Enter Room #: ")
     timeSlot = input("Enter Time [FORMAT H:MMpm or H:MMam]: ")
 
-   
+    repo = RepoCommunicator(repoUrl, repoPath)
+    bookings = BookingBuilder(user, passW)
 
     dateString = transformData(timeSlot, room, dateC)
+
+    bookings.addBooking(dateString, roomSize)
+
+    repo.addFile(bookings.fileName)
+    repo.pushData()
+
     login(user, passW, dateString, roomSize)
 
 
