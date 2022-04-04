@@ -17,6 +17,8 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 - Clone the repository (using git clone command)
 - Make sure python 3.6+ is installed and can be run from the command line
 - Navigate to the location your cloned repo is (use the cd command)
+- Install the dependencies by executing `pip install -r requirements.txt` from the main directory
+- Navigate to the proofOC folder (use the cd command)
 - Run the bookRoom.py script by typing "python bookRoom.py" into the command line
 - The application should load
 
