@@ -26,6 +26,7 @@ class RepoCommunicator:
     # path exists and is a directory
       if len(os.listdir(localPath)):
       # it's not empty, set local to it
+        print("Checking path : ", os.path.realpath(localPath))
         self.repo = git.Repo(os.path.realpath(localPath))
         # if remote file doesn't exist, recreate it
         # TODO validate this with git remote instead of string passed in

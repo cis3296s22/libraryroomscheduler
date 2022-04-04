@@ -98,8 +98,12 @@ class TestApp(MDApp):
         # save booking to file
         repo = RepoCommunicator(repoUrl, self.repoPath)
 
+        
+        timeS = "".join(timeS.split()) # removes any inner whitespace
+        timeS = timeS if timeS[0] != '0' else timeS[1:] # removes leading zero if present
+
         bookings = BookingBuilder(self.userN, self.passW)
-        bookings.addBooking(dateString, roomSize)
+        bookings.addBooking(date, timeS, roomSize)
 
         repo.addFile(bookings.fileName)
         repo.pushData()
