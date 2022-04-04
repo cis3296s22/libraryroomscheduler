@@ -7,13 +7,19 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 
 # How to run
 
-- For MacOS users :
+## Prerequisites
+
+- You'll need a [Github account](https://github.com/) and a [private repository](https://docs.github.com/en/get-started/quickstart/create-a-repo) to save booking information in. _Note: your Temple username and password will be stored here for the scheduler to remotely access your account, so MAKE SURE the repo is private!_
+
+## For MacOS users :
+
 - Download the latest zip from the Release section on the right on GitHub.
 - Extract the bookRoom.dmg file from the zip and open it
 - Right click on the bookRoom.app file inside and click 'Open'. A popup will be appear claiming the file is not safe.
 - Repeat the previous step. This time, the popup should have the option 'Open'. Click it and the application should load.
 
-- For Windows users :
+## For Windows/Linux users :
+
 - Clone the repository (using git clone command)
 - Make sure python 3.6+ is installed and can be run from the command line
 - Navigate to the location your cloned repo is (use the cd command)
@@ -24,7 +30,7 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 
 # How to contribute
 
-Follow this project board to know the latest status of the project: [http://...]([https://github.com/cis3296s22/libraryroomscheduler/projects/2])
+Follow the [project board](https://github.com/cis3296s22/libraryroomscheduler/projects/2) to know the latest status of the project.
 
 ## How to build
 

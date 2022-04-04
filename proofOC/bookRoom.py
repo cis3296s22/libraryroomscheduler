@@ -20,18 +20,25 @@ import datetime
 import calendar
 import loginWindow
 
+from BookingBuilder import BookingBuilder
+from RepoCommunicator import RepoCommunicator, remoteRepoConfigured
+
 class BookingScreen(Screen):
     pass
 
 class TestApp(MDApp):
 
-    userN=passW=""
+    userN=passW=repoUrl=""
+    repoPath = "local_repo"
+    repoUrl = remoteRepoConfigured(repoPath)
    
     def build(self):
         self.theme_cls.primary_palette = "Green"
         self.theme_cls.primary_hue = "200" 
-        self.theme_cls.theme_style = "Dark" 
-        return BookingScreen()
+        self.theme_cls.theme_style = "Dark"
+        root = BookingScreen()
+        root.ids.repoUrl.text = self.repoUrl
+        return root
 
     def get_time(self, instance, time):
         return time
@@ -80,13 +87,23 @@ class TestApp(MDApp):
             return None
         
 
-    def bookRoom(self, roomSize, timeS, roomNum, date):
+    def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
 
         roomSize = roomSize.strip().lower()
         dateString = self.transformData(timeS, roomNum, date)
         if(dateString==None or (roomSize!="small" and roomSize!="large")):
             print('Incorrect Entry/Format')
             return False
+
+        # save booking to file
+        repo = RepoCommunicator(repoUrl, self.repoPath)
+
+        bookings = BookingBuilder(self.userN, self.passW)
+        bookings.addBooking(dateString, roomSize)
+
+        repo.addFile(bookings.fileName)
+        repo.pushData()
+
 
         service = Service(executable_path=ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service)

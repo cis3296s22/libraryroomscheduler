@@ -7,6 +7,10 @@
         size_hint: None, None
         size: root.width * .5, root.width * .5
 
+        MDTextField:
+            id: repoUrl
+            hint_text: 'Enter the clone URL for the remote repository'
+
         GridLayout:
             cols: 2
             AnchorLayout:
@@ -54,7 +58,7 @@
         Button:
             id: submit
             text: 'Submit'
-            on_press: app.bookRoom(roomSize.text, time.text, roomNumber.text, date.text)
+            on_press: app.bookRoom(roomSize.text, time.text, roomNumber.text, date.text, repoUrl.text)
 
 
 
