@@ -14,9 +14,10 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 ## For MacOS users :
 
 - Download the latest zip from the Release section on the right on GitHub.
-- Extract the bookRoom.dmg file from the zip and open it
-- Right click on the bookRoom.app file inside and click 'Open'. A popup will be appear claiming the file is not safe.
-- Repeat the previous step. This time, the popup should have the option 'Open'. Click it and the application should load.
+- Extract the zip file
+- Open a terminal at the folder by right clicking the folder and selecting 'New Terminal at Folder'
+- Run the command `pip3 install -r requirements.txt`
+- Run the command 'python3 proofC/'
 
 ## For Windows/Linux users :
 
