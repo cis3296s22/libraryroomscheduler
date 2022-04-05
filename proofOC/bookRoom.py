@@ -107,50 +107,12 @@ class TestApp(MDApp):
         bookings.addBooking(date, timeS, roomSize)
 
         repo.addFile(bookings.fileName)
+        repo.addFile('.github/workflows/main.yml')
+        repo.addFile('scripts/actionScript.py')
+        repo.addFile('scripts/TraverseSite.py')
+        repo.addFile('scripts/requirements.txt')
         repo.pushData()
 
-
-        service = Service(executable_path=ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service)
-
-        # Login to tuportal
-        driver.get("https://tuportal.temple.edu/")
-        driver.maximize_window()
-
-        driver.find_element(By.XPATH, "//input[@id='username']").send_keys(self.userN)
-        driver.find_element(By.XPATH, "//input[@id='password']").send_keys(self.passW)
-        driver.find_element(By.XPATH, "//button[@class='btn btn-default btn-login']").click()
-
-
-        # CHECK LOGIN SUCCESS
-        # Wait 30 seconds to detect logout button (Could be login failed screen OR 2FA option)
-        try:
-            error = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//span[@class='logout']")))
-        except:
-            return False
-            
-        # Go to Charles Libary site (large/small)
-        driver.get(f"https://charlesstudy.temple.edu/reserve/charles-{roomSize}")
-
-
-        try:
-            pathOfTime = (f"//a[@aria-label='{dateString}']")
-            timeOption = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, pathOfTime)))
-            timeOption.click()
-        except:
-            print("Room Unavailable/Doesn't Exist")
-            return False
-
-        # Submit Booking
-        submitButton = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='submit_times']")))
-        submitButton.click()
-
-        # Log Out
-        jadaSucks = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//button[@id='s-lc-eq-bform-submit']")))
-        jadaSucks.click()
-
-        # Exit Driver
-        time.sleep(2)
         return True
 
 

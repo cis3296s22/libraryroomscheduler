@@ -59,7 +59,8 @@ If you used a virtual environment, be sure to deactivate it by executing `deacti
 In both programs, the user will be prompted for their TU credentials to login and they'll be asked to specify the details of their booking.
 
 - main.py opens the browser to show the automation of the login/booking process, but it won't make the reservation.
-- bookRoom.py the user can interact with a GUI to login and input their booking details. A browser will pop up to show the automated process (for now). An actual reservation will be made if the booking details are listed correctly (Check TUmail).
+
+- bookRoom.py the user can interact with a GUI to login and input their booking details and clone URL for the remote repository. The reservation details will be saved the a csv file in the remote repository.
 
 ---
 
@@ -69,7 +70,6 @@ In both programs, the user will be prompted for their TU credentials to login an
 
 ```
 pyinstaller --onefile -y --clean --windowed bookroom.spec
-
 pushd dist
 hdiutil create ./bookRoom.dmg -srcfolder bookRoom.app -ov
 popd

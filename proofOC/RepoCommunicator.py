@@ -17,6 +17,8 @@ class RepoCommunicator:
     """
     self.remoteRepoUrl = remoteRepoUrl
     self.localPath = localPath
+    self.workflowPath = localPath + "/.github/workflows"
+    self.actionsPath = localPath + "/scripts"
 
     if not os.path.exists(localPath):
     # path doesn't exist, create it
@@ -45,6 +47,26 @@ class RepoCommunicator:
     # path exists but is not a directory
     # this "shouldn't" trigger since the dir is hardcoded
       sys.exit("Please provide a directory for the local repository")
+
+
+
+    # Create nested .github/workflows directories and copy in yaml file
+    if not os.path.exists(self.workflowPath):
+      os.makedirs(self.workflowPath)
+      os.popen('cp proofOC/actions/main.yml ' + self.workflowPath)
+
+    
+    # Create actions folder to copy the scripts into
+    if not os.path.exists(self.actionsPath):
+      os.makedirs(self.actionsPath)
+      os.popen('cp proofOC/actions/actionScript.py ' + self.actionsPath)
+      os.popen('cp proofOC/actions/TraverseSite.py ' + self.actionsPath)
+      os.popen('cp proofOC/actions/requirements.txt ' + self.actionsPath)
+
+
+
+    
+    
 
 
   def addFile(self, fileName):
