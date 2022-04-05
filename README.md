@@ -13,11 +13,12 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 
 ## For MacOS users :
 
-- Download the latest zip from the Release section on the right on GitHub.
+- Download the latest zip from the Release section on the right on GitHub OR clone the repository use `git clone https://github.com/cis3296s22/libraryroomscheduler.git`
 - Extract the zip file
 - Open a terminal at the folder by right clicking the folder and selecting 'New Terminal at Folder'
 - Run the command `pip3 install -r requirements.txt`
-- Run the command 'python3 proofC/'
+- Run the command `python3 proofC/`
+- The application should load
 
 ## For Windows/Linux users :
 
