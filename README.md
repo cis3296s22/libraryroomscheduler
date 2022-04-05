@@ -10,6 +10,7 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 ## Prerequisites
 
 - You'll need a [Github account](https://github.com/) and a [private repository](https://docs.github.com/en/get-started/quickstart/create-a-repo) to save booking information in. _Note: your Temple username and password will be stored here for the scheduler to remotely access your account, so MAKE SURE the repo is private!_
+- Github _may_ enforce cloning over SSH, using the HTTPS clone URL will not work if this is the case. We recommend cloning over SSH. Github has some [good instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) on adding an SSH key to your account and using it.
 
 ## For MacOS users :
 
