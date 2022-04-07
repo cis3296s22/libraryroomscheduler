@@ -6,7 +6,7 @@ name: Testing Automatin with Cronjob
 on:
   schedule:
   # Run “At 00:00.”
-    - cron: "0 0 * * *"
+    - cron: "0 4 * * *"
     
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
