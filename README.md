@@ -14,10 +14,12 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 
 ## For MacOS users :
 
-- Download the latest zip from the Release section on the right on GitHub.
-- Extract the bookRoom.dmg file from the zip and open it
-- Right click on the bookRoom.app file inside and click 'Open'. A popup will be appear claiming the file is not safe.
-- Repeat the previous step. This time, the popup should have the option 'Open'. Click it and the application should load.
+- Download the latest zip from the Release section on the right on GitHub OR clone the repository use `git clone https://github.com/cis3296s22/libraryroomscheduler.git`
+- Extract the zip file
+- Open a terminal at the folder by right clicking the folder and selecting 'New Terminal at Folder'
+- Run the command `pip3 install -r requirements.txt`
+- Run the command `python3 proofC/`
+- The application should load
 
 ## For Windows/Linux users :
 
@@ -60,7 +62,8 @@ If you used a virtual environment, be sure to deactivate it by executing `deacti
 In both programs, the user will be prompted for their TU credentials to login and they'll be asked to specify the details of their booking.
 
 - main.py opens the browser to show the automation of the login/booking process, but it won't make the reservation.
-- bookRoom.py the user can interact with a GUI to login and input their booking details. A browser will pop up to show the automated process (for now). An actual reservation will be made if the booking details are listed correctly (Check TUmail).
+
+- bookRoom.py the user can interact with a GUI to login and input their booking details and clone URL for the remote repository. The reservation details will be saved the a csv file in the remote repository.
 
 ---
 
@@ -70,7 +73,6 @@ In both programs, the user will be prompted for their TU credentials to login an
 
 ```
 pyinstaller --onefile -y --clean --windowed bookroom.spec
-
 pushd dist
 hdiutil create ./bookRoom.dmg -srcfolder bookRoom.app -ov
 popd

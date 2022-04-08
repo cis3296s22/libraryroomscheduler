@@ -16,10 +16,10 @@ class BookingBuilder:
       with open(self.fullPath, "w+") as f:
         f.write(f"{username},{password}\n")
 
-  def addBooking(self, date:str, size:str):
+  def addBooking(self, date:str, time:str, size:str):
     """
     Adds a booking to the csv with each value wrapped in double quotes.
     """
     # TODO do we want to validate date/time here?
     with open(self.fullPath, "a+") as f:
-      f.write(f'"{date}","{size}"\n')
+      f.write(f'{date},{time},{size}\n')
