@@ -1,4 +1,4 @@
-import sys
+import logging
 import git
 import os
 
@@ -7,6 +7,9 @@ def remoteRepoConfigured(repoPath: str):
     with open(f"{repoPath}/remoteURL.txt", "r") as f:
       return f.readline().rstrip()
   return ""
+
+class RepositoryConfigurationException(Exception):
+  pass
 
 class RepoCommunicator:
 
@@ -19,6 +22,7 @@ class RepoCommunicator:
     self.localPath = localPath
     self.workflowPath = localPath + "/.github/workflows"
     self.actionsPath = localPath + "/scripts"
+    self.logger = logging.getLogger("appLog")
 
     if not os.path.exists(localPath):
     # path doesn't exist, create it
@@ -28,11 +32,16 @@ class RepoCommunicator:
     # path exists and is a directory
       if len(os.listdir(localPath)):
       # it's not empty, set local to it
-        self.repo = git.Repo(os.path.realpath(localPath))
+        try:
+          self.repo = git.Repo(os.path.realpath(localPath))
         # if remote file doesn't exist, recreate it
         # TODO validate this with git remote instead of string passed in
-        with open(f"{localPath}/remoteURL.txt", "w+") as f:
-            f.write(remoteRepoUrl)
+          with open(f"{localPath}/remoteURL.txt", "w+") as f:
+              f.write(remoteRepoUrl)
+        except Exception:
+          self.logger.exception("Unable to set local repo path:")
+          raise RepositoryConfigurationException(f"Error setting local repo to {localPath}.")
+          
       else:
       # it's empty, clone into it
         try:
@@ -40,27 +49,36 @@ class RepoCommunicator:
           with open(f"{localPath}/remoteURL.txt", "w+") as f:
             f.write(remoteRepoUrl)
 
-        except Exception as e:
-          sys.exit(f"An error occurred in cloning the repo:\n{e}")
+        except Exception:
+          self.logger.exception("Unable to create local repository:")
+          raise RepositoryConfigurationException(f"Unable to create local repository. Make sure {remoteRepoUrl} is your private repo. If it is you may need to configure SSH cloning.")
     else:
     # path exists but is not a directory
     # this "shouldn't" trigger since the dir is hardcoded
-      sys.exit("Please provide a directory for the local repository")
+      raise RepositoryConfigurationException(f"{localPath} is not a directory.")
 
 
 
     # Create nested .github/workflows directories and copy in yaml file
     if not os.path.exists(self.workflowPath):
-      os.makedirs(self.workflowPath)
-      os.popen('cp proofOC/actions/main.yml ' + self.workflowPath)
+      try:
+        os.makedirs(self.workflowPath)
+        os.popen('cp proofOC/actions/main.yml ' + self.workflowPath)
+      except Exception:
+        self.logger.exception("Unable to create worklows directory.")
+        raise RepositoryConfigurationException("Unable to create workflows directory.")
 
     
     # Create actions folder to copy the scripts into
     if not os.path.exists(self.actionsPath):
-      os.makedirs(self.actionsPath)
-      os.popen('cp proofOC/actions/actionScript.py ' + self.actionsPath)
-      os.popen('cp proofOC/actions/TraverseSite.py ' + self.actionsPath)
-      os.popen('cp proofOC/actions/requirements.txt ' + self.actionsPath)
+      try:
+        os.makedirs(self.actionsPath)
+        os.popen('cp proofOC/actions/actionScript.py ' + self.actionsPath)
+        os.popen('cp proofOC/actions/TraverseSite.py ' + self.actionsPath)
+        os.popen('cp proofOC/actions/requirements.txt ' + self.actionsPath)
+      except Exception:
+        self.logger.exception("Unable to create actions directory.")
+        raise RepositoryConfigurationException("Unable to create actions directory.")
 
 
 
@@ -79,4 +97,8 @@ class RepoCommunicator:
     Pushes the local repo up to GitHub
     """
     self.repo.index.commit('Update bookings.')
-    self.repo.remotes.origin.push()
+    try:
+      self.repo.remotes.origin.push()
+    except Exception:
+      self.logger.exception("Unable to push to the remote repository")
+      raise RepositoryConfigurationException("Unable to push to the remote repository")
