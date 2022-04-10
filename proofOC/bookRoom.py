@@ -118,7 +118,7 @@ class TestApp(MDApp):
         # save booking to file
         try:
             repo = RepoCommunicator(repoUrl, self.repoPath)
-        except Exception as e:
+        except RepositoryConfigurationException as e:
             self.display_results(f'{e}')
             return False
 
