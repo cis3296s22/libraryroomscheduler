@@ -29,9 +29,20 @@
                     text: 'No date chosen'
                     halign: 'right'
 
-        TextInput:
-            id: roomSize
-            hint_text: 'Room Size: [LARGE or SMALL]'
+        BoxLayout:
+            orientation: 'horizontal'
+            MDLabel:
+                text: 'Small'
+            CheckBox:
+                id: roomSize
+                group: 'size'
+                on_active: app.on_checkbox_active(self, self.active, "SMALL")
+            MDLabel:
+                text: 'Large'
+            CheckBox:
+                id: roomSize
+                group: 'size'
+                on_active: app.on_checkbox_active(self, self.active, "LARGE")
 
         TextInput:
             id: roomNumber
