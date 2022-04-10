@@ -20,7 +20,7 @@ class BookingBuilder:
       try:
         with open(self.fullPath, "w+") as f:
           f.write(f"{username},{password}\n")
-      except Exception as e:
+      except:
         self.logger.error("Unable to create file:")
         raise BookingCreationException("Unable to create file to store booking data!")
 
@@ -32,6 +32,6 @@ class BookingBuilder:
     try:
       with open(self.fullPath, "a+") as f:
         f.write(f'{date},{time},{size}\n')
-    except Exception as e:
+    except:
       self.logger.error("Unable to add to file:")
       raise BookingCreationException("Unable to add booking information to file!")

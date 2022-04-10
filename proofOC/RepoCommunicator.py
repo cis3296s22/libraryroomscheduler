@@ -49,7 +49,7 @@ class RepoCommunicator:
           with open(f"{localPath}/remoteURL.txt", "w+") as f:
             f.write(remoteRepoUrl)
 
-        except Exception:
+        except:
           self.logger.exception("Unable to create local repository:")
           raise RepositoryConfigurationException(f"Unable to create local repository. Make sure {remoteRepoUrl} is your private repo. If it is you may need to configure SSH cloning.")
     else:
@@ -64,8 +64,8 @@ class RepoCommunicator:
       try:
         os.makedirs(self.workflowPath)
         os.popen('cp proofOC/actions/main.yml ' + self.workflowPath)
-      except Exception:
-        self.logger.exception("Unable to create worklows directory.")
+      except:
+        self.logger.exception("Unable to create workflows directory.")
         raise RepositoryConfigurationException("Unable to create workflows directory.")
 
     
@@ -76,7 +76,7 @@ class RepoCommunicator:
         os.popen('cp proofOC/actions/actionScript.py ' + self.actionsPath)
         os.popen('cp proofOC/actions/TraverseSite.py ' + self.actionsPath)
         os.popen('cp proofOC/actions/requirements.txt ' + self.actionsPath)
-      except Exception:
+      except:
         self.logger.exception("Unable to create actions directory.")
         raise RepositoryConfigurationException("Unable to create actions directory.")
 
