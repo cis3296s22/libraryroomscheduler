@@ -93,7 +93,6 @@ class TestApp(MDApp):
         
 
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
-        print(roomSize)
         roomSize = roomSize.strip().lower()
         dateString = self.transformData(timeS, roomNum, date)
         if(dateString==None or (roomSize!="small" and roomSize!="large")):
