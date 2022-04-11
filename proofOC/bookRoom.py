@@ -166,6 +166,7 @@ class TestApp(MDApp):
             self.display_results(f'{e}')
             return False
 
+        self.display_results('Data sent to your repo!')
         return True
 
 
