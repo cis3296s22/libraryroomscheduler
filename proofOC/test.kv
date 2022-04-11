@@ -32,6 +32,9 @@
         BoxLayout:
             orientation: 'horizontal'
             MDLabel:
+                text: ' '
+            MDLabel:
+                font_size: "20sp"
                 text: 'Small'
             CheckBox:
                 color: 255, 255, 255, 1
@@ -39,12 +42,17 @@
                 group: 'size'
                 on_active: app.on_checkbox_active(self, self.active, "SMALL")
             MDLabel:
+                text: ' '
+            MDLabel:
+                font_size: "20sp"
                 text: 'Large'
             CheckBox:
                 color: 255, 255, 255, 1
                 id: roomSize
                 group: 'size'
                 on_active: app.on_checkbox_active(self, self.active, "LARGE")
+            MDLabel:
+                text: ' '
 
 
         TextInput:
