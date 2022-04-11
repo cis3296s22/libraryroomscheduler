@@ -1,18 +1,19 @@
 import os.path
+import sys
 import logging
 
 class BookingCreationException(Exception):
   pass
 
 class BookingBuilder:
-  def __init__(self, username: str, password: str):
+  def __init__(self, username: str, password: str, bookingP: str):
     """
     Creates a bookings history file only if it doesn't exist.
     The username and password are stored on the first line and used to 
     automate the scheduling.
     """
     self.fileName = "bookings.csv"
-    self.fullPath = f"local_repo/{self.fileName}"
+    self.fullPath = f"{bookingP}/{self.fileName}"
     self.logger = logging.getLogger("appLog")
 
     if not os.path.isfile(self.fullPath):
