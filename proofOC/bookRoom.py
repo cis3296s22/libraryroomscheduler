@@ -127,7 +127,6 @@ class TestApp(MDApp):
 
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
         self.hide_results()
-        roomSize = roomSize.strip().lower()
         dateString = self.transformData(timeS, roomNum, date)
         if(dateString==None or (roomSize!="small" and roomSize!="large")):
             self.display_results('Incorrect Entry/Format')
