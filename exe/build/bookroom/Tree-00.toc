@@ -6,6 +6,7 @@
   ('test.kv', '../proofOC/test.kv', 'DATA'),
   ('bookRoom.py', '../proofOC/bookRoom.py', 'DATA'),
   ('main.py', '../proofOC/main.py', 'DATA'),
+  ('app.log', '../proofOC/app.log', 'DATA'),
   ('loginWindow.py', '../proofOC/loginWindow.py', 'DATA'),
   ('BookingBuilder.py', '../proofOC/BookingBuilder.py', 'DATA'),
   ('RepoCommunicator.py', '../proofOC/RepoCommunicator.py', 'DATA'),

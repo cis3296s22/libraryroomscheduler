@@ -2,6 +2,8 @@ import logging
 import git
 import os
 
+
+
 def remoteRepoConfigured(repoPath: str):
   if os.path.exists(f"{repoPath}/remoteURL.txt"):
     with open(f"{repoPath}/remoteURL.txt", "r") as f:

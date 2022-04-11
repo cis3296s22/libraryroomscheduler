@@ -16,7 +16,8 @@ from kivymd.app import MDApp
 from kivymd.uix.picker import MDTimePicker
 from kivymd.uix.picker import MDDatePicker
 
-import time
+import os
+import sys
 import datetime
 import calendar
 import loginWindow
@@ -24,14 +25,27 @@ import loginWindow
 from BookingBuilder import BookingBuilder, BookingCreationException
 from RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
 
+def configurePath():  
+        execPath = os.path.dirname(sys.executable)
+        print("PATH: ", execPath)
+        if "dist" in execPath:
+            print("RUNNING FROM EXE")
+            return f"{execPath}/../../local_repo"
+            
+        else:
+            print("RUNNNG FROM CLI")
+            return "local_repo"
+            
+
 class BookingScreen(Screen):
     pass
 
 class TestApp(MDApp):
 
     userN=passW=repoUrl=""
-    repoPath = "local_repo"
+    repoPath = configurePath()
     repoUrl = remoteRepoConfigured(repoPath)
+    
    
     def build(self):
         self.theme_cls.primary_palette = "Green"
@@ -116,6 +130,8 @@ class TestApp(MDApp):
             return False
 
         # save booking to file
+
+
         try:
             repo = RepoCommunicator(repoUrl, self.repoPath)
         except RepositoryConfigurationException as e:
@@ -127,7 +143,7 @@ class TestApp(MDApp):
         timeS = timeS if timeS[0] != '0' else timeS[1:] # removes leading zero if present
     
         try:
-            bookings = BookingBuilder(self.userN, self.passW)
+            bookings = BookingBuilder(self.userN, self.passW, self.repoPath)
             bookings.addBooking(date, timeS, roomSize)
         except BookingCreationException as e:
             self.display_results(f'{e}')
