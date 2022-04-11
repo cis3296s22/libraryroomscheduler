@@ -14,6 +14,7 @@ from kivy.utils import get_color_from_hex
 from kivymd.app import MDApp
 from kivymd.uix.picker import MDTimePicker
 from kivymd.uix.picker import MDDatePicker
+from kivy.uix.checkbox import CheckBox
 
 import time
 import datetime
@@ -56,6 +57,10 @@ class TestApp(MDApp):
         time_selector.bind(on_cancel=self.on_time_cancel, on_save=self.on_time_save, time=self.get_time)
         time_selector.open()
 
+    def on_checkbox_active(self, instance, value, Size):
+        if value:
+            self.root.ids.roomSize.text = Size 
+
     def on_date_save(self, instance, value, date_range):
         self.root.ids.date.text = str(value)
 
@@ -88,7 +93,7 @@ class TestApp(MDApp):
         
 
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
-
+        print(roomSize)
         roomSize = roomSize.strip().lower()
         dateString = self.transformData(timeS, roomNum, date)
         if(dateString==None or (roomSize!="small" and roomSize!="large")):
