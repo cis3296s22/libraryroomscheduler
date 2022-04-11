@@ -28,6 +28,7 @@ from RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryC
 def configurePath():  
         execPath = os.path.dirname(sys.executable)
         print("PATH: ", execPath)
+        # TODO change the way's it's checking where it's running from "exe/dist" OR WHEN running 'python3 bookRoom.py' make the user include an argument 
         if "dist" in execPath:
             print("RUNNING FROM EXE")
             return f"{execPath}/../../local_repo"

@@ -20,7 +20,8 @@ For Temple students who need to schedule rooms in Charles Library farther in adv
 - Navigate the project folder : Open the exe folder and then the dist folder
 - Run the exe file 
 - ![This is a screenshot of the exe file.](images/exe.png)
-- The application should load
+- A terminal will pop up as it loads - Do not exit this! Leave it alone 
+- The TUPortal login page should show
 
 ## For Windows/Linux users :
 - Clone the repository (using git clone command)
