@@ -1,5 +1,8 @@
-from ast import Str
 import os.path
+import logging
+
+class BookingCreationException(Exception):
+  pass
 
 class BookingBuilder:
   def __init__(self, username: str, password: str):
@@ -10,16 +13,25 @@ class BookingBuilder:
     """
     self.fileName = "bookings.csv"
     self.fullPath = f"local_repo/{self.fileName}"
+    self.logger = logging.getLogger("appLog")
 
     if not os.path.isfile(self.fullPath):
     # create the first line with user/pass if it doesn't exist
-      with open(self.fullPath, "w+") as f:
-        f.write(f"{username},{password}\n")
+      try:
+        with open(self.fullPath, "w+") as f:
+          f.write(f"{username},{password}\n")
+      except:
+        self.logger.error("Unable to create file:")
+        raise BookingCreationException("Unable to create file to store booking data!")
 
   def addBooking(self, date:str, time:str, size:str):
     """
     Adds a booking to the csv with each value wrapped in double quotes.
     """
     # TODO do we want to validate date/time here?
-    with open(self.fullPath, "a+") as f:
-      f.write(f'{date},{time},{size}\n')
+    try:
+      with open(self.fullPath, "a+") as f:
+        f.write(f'{date},{time},{size}\n')
+    except:
+      self.logger.error("Unable to add to file:")
+      raise BookingCreationException("Unable to add booking information to file!")
