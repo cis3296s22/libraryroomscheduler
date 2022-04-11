@@ -1,5 +1,6 @@
 # https://kivy.org/doc/stable/guide/packaging-osx.html
 
+import logging
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
@@ -16,13 +17,27 @@ from kivymd.uix.picker import MDTimePicker
 from kivymd.uix.picker import MDDatePicker
 from kivy.uix.checkbox import CheckBox
 
-import time
+import os
+import sys
 import datetime
 import calendar
 import loginWindow
 
-from BookingBuilder import BookingBuilder
-from RepoCommunicator import RepoCommunicator, remoteRepoConfigured
+from BookingBuilder import BookingBuilder, BookingCreationException
+from RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
+
+def configurePath():
+        execPath = os.path.dirname(sys.executable)
+        print("PATH: ", execPath)
+        # TODO change the way's it's checking where it's running from "exe/dist" OR WHEN running 'python3 bookRoom.py' make the user include an argument
+        if "dist" in execPath:
+            print("RUNNING FROM EXE")
+            return f"{execPath}/../../local_repo"
+
+        else:
+            print("RUNNNG FROM CLI")
+            return "local_repo"
+
 
 class BookingScreen(Screen):
     pass
@@ -30,12 +45,13 @@ class BookingScreen(Screen):
 class TestApp(MDApp):
 
     userN=passW=repoUrl=""
-    repoPath = "local_repo"
+    repoPath = configurePath()
     repoUrl = remoteRepoConfigured(repoPath)
-   
+
+
     def build(self):
         self.theme_cls.primary_palette = "Green"
-        self.theme_cls.primary_hue = "200" 
+        self.theme_cls.primary_hue = "200"
         self.theme_cls.theme_style = "Dark"
         root = BookingScreen()
         root.ids.repoUrl.text = self.repoUrl
@@ -59,7 +75,7 @@ class TestApp(MDApp):
 
     def on_checkbox_active(self, instance, value, Size):
         if value:
-            self.root.ids.roomSize.text = Size 
+            self.root.ids.roomSize.text = Size
 
     def on_date_save(self, instance, value, date_range):
         self.root.ids.date.text = str(value)
@@ -90,37 +106,82 @@ class TestApp(MDApp):
             return selectTime
         except:
             return None
-        
+
+    def display_results(self, message: str):
+        """
+        Displays feedback message, generally a success or error message.
+        """
+        results = self.root.ids.results
+        results.text = f"* {message}"
+        results.height, results.opacity, results.disabled = '70dp', 100, False
+
+    def hide_results(self):
+        """
+        Resets and hides any feedback message
+        """
+        results = self.root.ids.results
+        results.text = ''
+        results.height, results.opacity, results.disabled = 0, 0, True
+
+
 
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
+        self.hide_results()
         roomSize = roomSize.strip().lower()
         dateString = self.transformData(timeS, roomNum, date)
         if(dateString==None or (roomSize!="small" and roomSize!="large")):
-            print('Incorrect Entry/Format')
+            self.display_results('Incorrect Entry/Format')
             return False
 
         # save booking to file
-        repo = RepoCommunicator(repoUrl, self.repoPath)
+
+
+        try:
+            repo = RepoCommunicator(repoUrl, self.repoPath)
+        except RepositoryConfigurationException as e:
+            self.display_results(f'{e}')
+            return False
 
         timeS = timeS.strip().lower()
         timeS = "".join(timeS.split()) # removes any inner whitespace
         timeS = timeS if timeS[0] != '0' else timeS[1:] # removes leading zero if present
-    
 
-        bookings = BookingBuilder(self.userN, self.passW)
-        bookings.addBooking(date, timeS, roomSize)
+        try:
+            bookings = BookingBuilder(self.userN, self.passW, self.repoPath)
+            bookings.addBooking(date, timeS, roomSize)
+        except BookingCreationException as e:
+            self.display_results(f'{e}')
+            return False
 
-        repo.addFile(bookings.fileName)
-        repo.addFile('.github/workflows/main.yml')
-        repo.addFile('scripts/actionScript.py')
-        repo.addFile('scripts/TraverseSite.py')
-        repo.addFile('scripts/requirements.txt')
-        repo.pushData()
+        file_names = [
+            bookings.fileName,
+            '.github/workflows/main.yml',
+            'scripts/actionScript.py',
+            'scripts/TraverseSite.py',
+            'scripts/requirements.txt',
+        ]
 
+        try:
+            for file in file_names:
+                repo.addFile(file)
+            repo.pushData()
+        except RepositoryConfigurationException as e:
+            self.display_results(f'{e}')
+            return False
+
+        self.display_results('Data sent to your repo!')
         return True
 
 
 if __name__ == '__main__':
+    logger = logging.getLogger("appLog")
+    fh = logging.FileHandler('app.log')
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    fh.setFormatter(formatter)
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(fh)
+    logger.debug("Application started.")
+
     userN, passW = loginWindow.login()
     if(userN!=None):
         testApp = TestApp()
@@ -129,7 +190,3 @@ if __name__ == '__main__':
         testApp.run()
     else:
         print("Minute has elapsed. Abort.")
-
-    
-
-
