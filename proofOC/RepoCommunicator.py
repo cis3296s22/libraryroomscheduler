@@ -65,7 +65,6 @@ class RepoCommunicator:
     if not os.path.exists(self.workflowPath):
       try:
         os.makedirs(self.workflowPath)
-        os.popen('cp proofOC/actions/main.yml ' + self.workflowPath)
       except:
         self.logger.exception("Unable to create workflows directory.")
         raise RepositoryConfigurationException("Unable to create workflows directory.")
@@ -75,13 +74,19 @@ class RepoCommunicator:
     if not os.path.exists(self.actionsPath):
       try:
         os.makedirs(self.actionsPath)
-        os.popen('cp proofOC/actions/actionScript.py ' + self.actionsPath)
-        os.popen('cp proofOC/actions/TraverseSite.py ' + self.actionsPath)
-        os.popen('cp proofOC/actions/requirements.txt ' + self.actionsPath)
       except:
         self.logger.exception("Unable to create actions directory.")
         raise RepositoryConfigurationException("Unable to create actions directory.")
 
+    # always copy the latest files
+    try:
+      os.popen('cp proofOC/actions/main.yml ' + self.workflowPath)
+      os.popen('cp proofOC/actions/actionScript.py ' + self.actionsPath)
+      os.popen('cp proofOC/actions/TraverseSite.py ' + self.actionsPath)
+      os.popen('cp proofOC/actions/requirements.txt ' + self.actionsPath)
+    except:
+      self.logger.exception("Error copying github action files to local repository")
+      raise RepositoryConfigurationException("Error creating github action files. See app.log for more details")
 
 
     
