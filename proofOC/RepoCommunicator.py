@@ -53,6 +53,7 @@ class RepoCommunicator:
 
         except:
           self.logger.exception("Unable to create local repository:")
+          
           raise RepositoryConfigurationException(f"Unable to create local repository. Make sure {remoteRepoUrl} is your private repo. If it is you may need to configure SSH cloning.")
     else:
     # path exists but is not a directory
@@ -92,7 +93,14 @@ class RepoCommunicator:
     """
     Stages a file for commit
     """
-    self.repo.index.add(fileName)
+    try:
+      self.repo.index.add(fileName)
+    except:
+      self.logger.exception("Unable to add file to index")
+      raise RepositoryConfigurationException("Unable to add file to index")
+
+      
+
 
   def pushData(self):
     """
