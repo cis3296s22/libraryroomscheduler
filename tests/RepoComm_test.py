@@ -87,12 +87,12 @@ def test_repoAddS(setUp):
 def test_repoAddF(setUp):
     try : 
         repo = createRepo("https://github.com/ccho-0508/testLi.git", mainPath)
-        repo.addFile("tests/bookings.csv")
+        repo.addFile("bookings.csv")
     except RepositoryConfigurationException as exc:
         assert True, f"'repo.addFile()' raised an exception {exc}"
 
 # Push repo
-def test_repoPushData(setUp):
+def test_repoPushDataS(setUp):
     repo = createRepo("https://github.com/ccho-0508/testLi.git", mainPath)
     try : 
         repo.pushData()
@@ -100,7 +100,7 @@ def test_repoPushData(setUp):
         assert False, f"'repo.pushData())' raised an exception {exc}"
 
 # Push repo
-def test_repoPushData(setUp):
+def test_repoPushDataF(setUp):
     repo = createRepo("https://github.com/ccho-0508/testLi.git", mainPath)
     try : 
         repo.repo = None
