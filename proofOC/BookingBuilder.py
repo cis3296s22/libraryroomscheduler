@@ -36,3 +36,13 @@ class BookingBuilder:
     except:
       self.logger.error("Unable to add to file:")
       raise BookingCreationException("Unable to add booking information to file!")
+
+def removeBooking(self):
+    try:
+        with open(self.fullPath, "r+") as f:
+            lines = f.readlines()
+            lines.pop(1)
+            f.writelines(lines)
+    except:
+      self.logger.error("Unable to change the file:")
+      raise BookingCreationException("Unable to change booking information in the file!")

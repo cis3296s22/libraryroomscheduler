@@ -170,6 +170,17 @@ class TestApp(MDApp):
 
         self.display_results('Data sent to your repo!')
         return True
+    
+    def cancelRoom (self, roomSize, timeS, roomNum, date, repoUrl):
+        try:
+            bookingToCancel = BookingBuilder(self.userN, self.passW, self.repoPath)
+            bookingToCancel.removeBooking()
+        except BookingCreationException as e:
+            self.display_results(f'{e}')
+            return False
+
+        self.display_results('Your booking was cancelled!')
+        return True
 
 
 if __name__ == '__main__':
