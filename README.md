@@ -70,8 +70,8 @@ In both programs, the user will be prompted for their TU credentials to login an
 ### Testing
 
 Generate Coverage Report and Test Output :
-- Run from the main directory
-- ```coverage run -m pytest tests --html=report.html --self-contained-html --user YOUR_TU_USERNAME --passW YOUR_PASSWORD```
+- ```cd tests``` 
+- ```coverage run -m pytest --html=report.html --self-contained-html --user YOUR_TU_USERNAME --passW YOUR_PASSWORD```
 - ```coverage report -m```
 
 
