@@ -20,13 +20,13 @@ import os
 import sys
 import datetime
 import calendar
-import loginWindow
+import proofOC.loginWindow
 
-from BookingBuilder import BookingBuilder, BookingCreationException
-from RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
+from proofOC.BookingBuilder import BookingBuilder, BookingCreationException
+from proofOC.RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
 
-def configurePath():  
-        execPath = os.path.dirname(sys.executable)
+def configurePath(execPath: str):  
+    
         print("PATH: ", execPath)
         # TODO change the way's it's checking where it's running from "exe/dist" OR WHEN running 'python3 bookRoom.py' make the user include an argument 
         if "dist" in execPath:
@@ -44,7 +44,7 @@ class BookingScreen(Screen):
 class TestApp(MDApp):
 
     userN=passW=repoUrl=""
-    repoPath = configurePath()
+    repoPath = configurePath(os.path.dirname(sys.executable))
     repoUrl = remoteRepoConfigured(repoPath)
     
    
@@ -117,7 +117,6 @@ class TestApp(MDApp):
         results = self.root.ids.results
         results.text = ''
         results.height, results.opacity, results.disabled = 0, 0, True
-        
         
 
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):

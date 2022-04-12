@@ -58,6 +58,7 @@ if booking:
     bookingString = scrapeSite.findRoom(dateTime)
 
     if bookingString is not None:
+       
         scrapeSite.bookRoom(bookingString, userN, passW)
     else:
         print("No rooms available")
