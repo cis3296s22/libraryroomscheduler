@@ -2,3 +2,4 @@ personas/
 .DS_Store
 venv/
 local_repo/
+app.log
