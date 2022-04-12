@@ -1,5 +1,7 @@
 # https://kivy.org/doc/stable/guide/packaging-osx.html
 
+from turtle import onrelease
+from unittest import skip
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
@@ -8,6 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
+from kivy.uix.popup import Popup
 
 from kivy.utils import get_color_from_hex
 
@@ -19,11 +22,15 @@ import time
 import datetime
 import calendar
 import loginWindow
+import csv
 
 from BookingBuilder import BookingBuilder
 from RepoCommunicator import RepoCommunicator, remoteRepoConfigured
 
 class BookingScreen(Screen):
+    pass
+
+class P(Screen):
     pass
 
 class TestApp(MDApp):
@@ -66,6 +73,26 @@ class TestApp(MDApp):
         date_picker = MDDatePicker()
         date_picker.bind(on_cancel=self.on_date_cancel, on_save=self.on_date_save)
         date_picker.open()
+    
+    def read_reservations(self):
+        self.fileName = "bookings.csv"
+        self.fullPath = f"local_repo/{self.fileName}"
+        count = 0
+        content = ""
+        with open(self.fullPath, "r") as f:
+         reader = csv.reader(f)
+         for line in reader:
+            if (count != 0):
+                 print(line)
+                 content = content + " ".join(map(str, line)) + "\n"
+            count = count+1
+        return content        
+   
+    def show_reservations(self):
+        show = P()
+        popup = Popup(title='Your Reservations', content= show, size_hint = (0.8, 0.8))
+        #TODO Implement a back button/more intuitive way to dismiss popup window
+        popup.open()
 
     def transformData(self, timeS, roomNum, date):
         try:
@@ -86,7 +113,8 @@ class TestApp(MDApp):
         except:
             return None
         
-
+        
+    
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
 
         roomSize = roomSize.strip().lower()
@@ -114,7 +142,9 @@ class TestApp(MDApp):
         repo.pushData()
 
         return True
-
+    
+    
+        
 
 if __name__ == '__main__':
     userN, passW = loginWindow.login()
