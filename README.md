@@ -69,12 +69,17 @@ In both programs, the user will be prompted for their TU credentials to login an
 
 ### Testing
 
+<<<<<<< HEAD
 Generate Coverage Report and Test Output :
 - ```cd tests``` 
 - ```coverage run -m pytest --html=report.html --self-contained-html --user YOUR_TU_USERNAME --passW YOUR_PASSWORD```
 - ```coverage report -m```
 
 
+=======
+- Generate Coverage Report : Run ```coverage run -m pytest --user YOUR_TU_USERNAME --passW YOUR_PASSWORD```
+- Run 
+>>>>>>> parent of ddf0031 (Update README.md)
 
 ### Building the Executable
 
