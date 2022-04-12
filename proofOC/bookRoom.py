@@ -21,10 +21,10 @@ import os
 import sys
 import datetime
 import calendar
-import loginWindow
+from proofOC.loginWindow import login
 
-from BookingBuilder import BookingBuilder, BookingCreationException
-from RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
+from proofOC.BookingBuilder import BookingBuilder, BookingCreationException
+from proofOC.RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
 
 def configurePath():
         execPath = os.path.dirname(sys.executable)
@@ -181,7 +181,7 @@ if __name__ == '__main__':
     logger.addHandler(fh)
     logger.debug("Application started.")
 
-    userN, passW = loginWindow.login()
+    userN, passW = login()
     if(userN!=None):
         testApp = TestApp()
         setattr(testApp, 'userN', userN)
