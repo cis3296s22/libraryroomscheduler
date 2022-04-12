@@ -103,7 +103,11 @@ class RepoCommunicator:
     """
     Pushes the local repo up to GitHub
     """
-    self.repo.index.commit('Update bookings.')
+    try:
+      self.repo.index.commit('Update bookings.')
+    except Exception:
+      self.logger.exception("Unable to commit to the repository")
+      raise RepositoryConfigurationException("Unable to commit to the repository")
     try:
       self.repo.remotes.origin.push()
     except Exception:
