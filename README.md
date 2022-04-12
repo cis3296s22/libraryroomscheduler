@@ -67,7 +67,12 @@ In both programs, the user will be prompted for their TU credentials to login an
 
 ---
 
-### BUILD EXECUTABLE
+### Testing
+
+- Generate Coverage Report : Run ```coverage run -m pytest --user YOUR_TU_USERNAME --passW YOUR_PASSWORD```
+- Run 
+
+### Building the Executable
 
 - From exe folder:
 
