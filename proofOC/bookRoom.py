@@ -15,6 +15,7 @@ from kivy.utils import get_color_from_hex
 from kivymd.app import MDApp
 from kivymd.uix.picker import MDTimePicker
 from kivymd.uix.picker import MDDatePicker
+from kivy.uix.checkbox import CheckBox
 
 import os
 import sys
@@ -26,18 +27,18 @@ import csv
 from BookingBuilder import BookingBuilder, BookingCreationException
 from RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
 
-def configurePath():  
+def configurePath():
         execPath = os.path.dirname(sys.executable)
         print("PATH: ", execPath)
-        # TODO change the way's it's checking where it's running from "exe/dist" OR WHEN running 'python3 bookRoom.py' make the user include an argument 
+        # TODO change the way's it's checking where it's running from "exe/dist" OR WHEN running 'python3 bookRoom.py' make the user include an argument
         if "dist" in execPath:
             print("RUNNING FROM EXE")
             return f"{execPath}/../../local_repo"
-            
+
         else:
             print("RUNNNG FROM CLI")
             return "local_repo"
-            
+
 
 class BookingScreen(Screen):
     pass
@@ -50,11 +51,11 @@ class TestApp(MDApp):
     userN=passW=repoUrl=""
     repoPath = configurePath()
     repoUrl = remoteRepoConfigured(repoPath)
-    
-   
+
+
     def build(self):
         self.theme_cls.primary_palette = "Green"
-        self.theme_cls.primary_hue = "200" 
+        self.theme_cls.primary_hue = "200"
         self.theme_cls.theme_style = "Dark"
         root = BookingScreen()
         root.ids.repoUrl.text = self.repoUrl
@@ -75,6 +76,10 @@ class TestApp(MDApp):
         time_selector = MDTimePicker(accent_color=get_color_from_hex("#BEBEBE"))
         time_selector.bind(on_cancel=self.on_time_cancel, on_save=self.on_time_save, time=self.get_time)
         time_selector.open()
+
+    def on_checkbox_active(self, instance, value, Size):
+        if value:
+            self.root.ids.roomSize.text = Size
 
     def on_date_save(self, instance, value, date_range):
         self.root.ids.date.text = str(value)
@@ -140,16 +145,11 @@ class TestApp(MDApp):
         """
         results = self.root.ids.results
         results.text = ''
-        results.height, results.opacity, results.disabled = 0, 0, True
-        
-        
-        
-    
+        results.height, results.opacity, results.disabled = 0, 0, Tru
+
+
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
-
         self.hide_results()
-
-        roomSize = roomSize.strip().lower()
         dateString = self.transformData(timeS, roomNum, date)
         if(dateString==None or (roomSize!="small" and roomSize!="large")):
             self.display_results('Incorrect Entry/Format')
@@ -167,7 +167,7 @@ class TestApp(MDApp):
         timeS = timeS.strip().lower()
         timeS = "".join(timeS.split()) # removes any inner whitespace
         timeS = timeS if timeS[0] != '0' else timeS[1:] # removes leading zero if present
-    
+
         try:
             bookings = BookingBuilder(self.userN, self.passW, self.repoPath)
             bookings.addBooking(date, timeS, roomSize)
@@ -205,7 +205,7 @@ if __name__ == '__main__':
     logger.setLevel(logging.DEBUG)
     logger.addHandler(fh)
     logger.debug("Application started.")
-    
+
     userN, passW = loginWindow.login()
     if(userN!=None):
         testApp = TestApp()
@@ -214,7 +214,3 @@ if __name__ == '__main__':
         testApp.run()
     else:
         print("Minute has elapsed. Abort.")
-
-    
-
-
