@@ -146,7 +146,7 @@ class TestApp(MDApp):
         """
         results = self.root.ids.results
         results.text = ''
-        results.height, results.opacity, results.disabled = 0, 0, Tru
+        results.height, results.opacity, results.disabled = 0, 0, True
 
 
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
