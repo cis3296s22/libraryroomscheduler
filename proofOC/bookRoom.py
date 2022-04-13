@@ -23,7 +23,6 @@ import sys
 import datetime
 import calendar
 from proofOC.loginWindow import login
-import loginWindow
 import csv
 
 from proofOC.BookingBuilder import BookingBuilder, BookingCreationException
