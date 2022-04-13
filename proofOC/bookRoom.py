@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
+from kivy.uix.popup import Popup
 
 from kivy.utils import get_color_from_hex
 
@@ -22,6 +23,8 @@ import sys
 import datetime
 import calendar
 from proofOC.loginWindow import login
+import loginWindow
+import csv
 
 from proofOC.BookingBuilder import BookingBuilder, BookingCreationException
 from proofOC.RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
@@ -39,6 +42,9 @@ def configurePath(execPath: str):
 
 
 class BookingScreen(Screen):
+    pass
+
+class P(Screen):
     pass
 
 class TestApp(MDApp):
@@ -86,6 +92,26 @@ class TestApp(MDApp):
         date_picker = MDDatePicker()
         date_picker.bind(on_cancel=self.on_date_cancel, on_save=self.on_date_save)
         date_picker.open()
+    
+    def read_reservations(self):
+        self.fileName = "bookings.csv"
+        self.fullPath = f"local_repo/{self.fileName}"
+        count = 0
+        content = ""
+        with open(self.fullPath, "r") as f:
+         reader = csv.reader(f)
+         for line in reader:
+            if (count != 0):
+                 print(line)
+                 content = content + " ".join(map(str, line)) + "\n"
+            count = count+1
+        return content        
+   
+    def show_reservations(self):
+        show = P()
+        popup = Popup(title='Your Reservations', content= show, size_hint = (0.8, 0.8))
+        #TODO Implement a back button/more intuitive way to dismiss popup window
+        popup.open()
 
     def transformData(self, timeS, roomNum, date):
         try:
@@ -121,7 +147,6 @@ class TestApp(MDApp):
         results = self.root.ids.results
         results.text = ''
         results.height, results.opacity, results.disabled = 0, 0, True
-
 
 
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
@@ -169,7 +194,9 @@ class TestApp(MDApp):
 
         self.display_results('Data sent to your repo!')
         return True
-
+    
+    
+        
 
 if __name__ == '__main__':
     logger = logging.getLogger("appLog")

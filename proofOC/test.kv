@@ -84,10 +84,11 @@
             id: submit
             text: 'Submit'
             on_press: app.bookRoom(roomSize.text, time.text, roomNumber.text, date.text, repoUrl.text)
-
-
-
- 
-
-
-
+        
+        Button:
+            id: show_reservations
+            text: 'Show Your Reservations'
+            on_press: app.show_reservations()
+<P@Popup>:        
+    Label:
+        text: app.read_reservations()
