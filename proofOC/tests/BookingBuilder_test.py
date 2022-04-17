@@ -1,80 +1,39 @@
-from venv import create
-from BookingBuilder import BookingBuilder, BookingCreationException
-from RepoCommunicator import RepoCommunicator
 import pytest
 import shutil
 import os
-import time
 
+from unittest import TestCase
+from proofOC.BookingBuilder import BookingBuilder, BookingCreationException
 
-mainPath="tests/local_test_repo"
+class Test_BookingBuilder(TestCase):
 
-def createRepo(url, localPath):
-    return RepoCommunicator(url, localPath)
+  LOCAL_PATH_NAME = "local"
+  USERNAME = "user"
+  PASSWORD = "p@ssw0rd"
 
-@pytest.fixture()
-def setUp():
-    print("testing")
-    yield
-    deletingD = [".github/", "scripts/", ".git/","bookings.csv", "remoteURL.txt", "scripts"]
-    
-    for i in deletingD:
-        try:
-            if(i[-1]=="/"):
-                shutil.rmtree(f"{mainPath}/{i}")
-            else:
-                os.remove(f"{mainPath}/{i}")
-        except:
-            pass
-    
-    shutil.rmtree(mainPath)
-    time.sleep(5)
+  @classmethod
+  def setUp(self):
+    os.mkdir(self.LOCAL_PATH_NAME)
 
-def test_bookingCreateF():
-    try : 
-        booking = BookingBuilder("userName", "passWord", mainPath)
-    except BookingCreationException as exc:
-        assert True, f"'new BookingBuilder object' raised an exception {exc}"
+  @classmethod
+  def tearDown(self):
+    shutil.rmtree(self.LOCAL_PATH_NAME)
 
-        
-def test_bookingCreateS(setUp):
-    repo = createRepo("https://github.com/ccho-0508/testL.git", mainPath)
-    try : 
-        booking = BookingBuilder("userName", "passWord", mainPath)
-        with open(f"{mainPath}/bookings.csv") as f:
-            assert f.readline().strip() == "userName,passWord"
-    except BookingCreationException as exc:
-        assert False, f"'new BookingBuilder object' raised an exception {exc}"
+  def test_create_new_booking_builder(self):
+    booking = BookingBuilder(self.USERNAME, self.PASSWORD, self.LOCAL_PATH_NAME)
+    assert booking is not None
 
+  def test_create_new_booking_builder_throws_on_nonexistent_path(self):
+    with pytest.raises(BookingCreationException) as test_exception:
+      booking = BookingBuilder(self.USERNAME, self.PASSWORD, "bad_path")
 
-def test_addBookingF(setUp):
-    repo = createRepo("https://github.com/ccho-0508/testL.git", mainPath)
-    try: 
-        booking = BookingBuilder("userName", "passWord", mainPath)
-        booking.fullPath = ""
-        booking.addBooking("5-8-2022","5:00pm","large")
-        assert False
-    except BookingCreationException as exc:
-        assert True, f"'new BookingBuilder object' raised an exception {exc}"
+    assert "Unable to create file" in str(test_exception.value)
 
-def test_addBookingS(setUp):
-    repo = createRepo("https://github.com/ccho-0508/testL.git", mainPath)
-    try: 
-        booking = BookingBuilder("userName", "passWord", mainPath)
-        booking.addBooking("5-8-2022","5:00pm","large")
-        assert True
-    except BookingCreationException as exc:
-        assert False, f"'new BookingBuilder object' raised an exception {exc}"
+  def test_add_booking_to_file(self):
+    booking = BookingBuilder(self.USERNAME, self.PASSWORD, self.LOCAL_PATH_NAME)
+    booking.addBooking("2022-04-17", "8:00am", "small")
 
-
-def test_writeFirstLine(setUp):
-    repo = createRepo("https://github.com/ccho-0508/testL.git", mainPath)
-    os.remove(f"{mainPath}/bookings.csv")
-    try: 
-        booking = BookingBuilder("userName", "passWord", mainPath)
-        
-        booking.addBooking("5-8-2022","5:00pm","large")
-        assert True
-    except BookingCreationException as exc:
-        assert False, f"'new BookingBuilder object' raised an exception {exc}"
-
+    f = open (booking.fullPath, "r")
+    lines = f.readlines()
+    f.close()
+    assert "2022-04-17,8:00am,small" in lines[1]
