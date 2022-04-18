@@ -79,8 +79,10 @@ class TestApp(MDApp):
         time_selector.open()
 
     def on_checkbox_active(self, instance, value, Size):
-        if value:
+        if (value==True):
             self.root.ids.roomSize.text = Size
+        if (value==False):
+            self.root.ids.roomSize.text = ''
 
     def on_date_save(self, instance, value, date_range):
         self.root.ids.date.text = str(value)
@@ -152,6 +154,9 @@ class TestApp(MDApp):
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
         self.hide_results()
         dateString = self.transformData(timeS, roomNum, date)
+        if (roomSize == ''):
+            self.display_results('Please select your room size')
+            return False
         if(dateString==None or (roomSize!="small" and roomSize!="large")):
             self.display_results('Incorrect Entry/Format')
             return False
