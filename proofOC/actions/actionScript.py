@@ -4,7 +4,10 @@
 
 import datetime as dt
 import calendar
+
+from numpy import index_exp
 from TraverseSite import TraverseSite
+import pandas as pd
 
 
 def convertDate(date, time):
@@ -14,54 +17,51 @@ def convertDate(date, time):
     selectTime = (f"{time} {weekday}, {fullDate}")
     return selectTime
 
+def readCSV(bookings):
+    # Grab the date and the new day that just opened up
+    currentDate = dt.date.today()
+    smallNewDate = str(currentDate + dt.timedelta(days=2))
+    largeNewDate = str(currentDate + dt.timedelta(days=3))
 
-# Grab the date and the new day that just opened up
-currentDate = dt.date.today()
-newDate = str(currentDate + dt.timedelta(days=2))
+    userN = bookings.iloc[0]['date']
+    passW = bookings.iloc[0]['time']
 
-passW = userN = ""
-booking = []
+    bookings = bookings.drop([0]).reset_index(drop=True)
+    bookings = bookings.loc[(bookings['date'] == smallNewDate) & (bookings['size'] =='small') | (bookings['date'] == largeNewDate) & (bookings['size'] =='large')]
+    bookings = bookings.reset_index(drop=True)
 
-# Check if there are any dates in the csv that can be booked (compare to newDate)
-with open('bookings.csv', 'r') as f:
-    count = 0
-    results = []
-    for line in f:
-        words = line.strip().split(',')
-        lineObj = words[0]
+    finalBookings=[]
 
-        # If the first line is being read, save the username and password
-        if(count==0):
-            userN = lineObj
-            passW = words[1]
-            count = count+1
-            continue
-            
-        if(words[0] == newDate):
-            print("Booking for date: " + lineObj + " @ " + words[1])
-            booking = words
-            break
-        else:
-            print("Cant book for date: " + lineObj)
-        count = count+1
+    for size in ['small', 'large']:
+        index = bookings.index[bookings['size'] == size].tolist()
+        if(len(index)>0):
+            index=index[0]
+            dateTime = convertDate(bookings.iloc[index]['date'], bookings.iloc[index]['time'])
+            sizeOption = bookings.iloc[index]['size']
+            finalBookings.append(f"{dateTime}+{sizeOption}") 
 
+    print("Making bookings for: \n{}".format(finalBookings))
 
-# Make the booking 
-if booking:
-    link = f"https://charlesstudy.temple.edu/reserve/charles-{booking[2]}"
-    scrapeSite = TraverseSite(link)
-
-    # Convert csv date and time in the correct format ('8:30am Wednesday, April 6, 2022...')
-    dateTime = convertDate(booking[0], booking[1])
-
-    # 'Random' room number is returned in correct format ('8:30am Wednesday, April 6, 2022 - ### - Available)
-    bookingString = scrapeSite.findRoom(dateTime)
-
-    if bookingString is not None:
-       
-        scrapeSite.bookRoom(bookingString, userN, passW)
+    if(finalBookings):
+        scrapeSite = TraverseSite("https://tuportal5.temple.edu/", "https://charlesstudy.temple.edu/reserve/charles-")
+        return scrapeSite.bookRoom(finalBookings, userN, passW)
     else:
-        print("No rooms available")
-else:
-    print("No bookings to be made")
-    
+        print("No Rooms to Book for")
+
+successfulBookings = []
+try: 
+    bookings = pd.read_csv('bookings.csv', names=["date", "time", "size"])
+    if(not bookings.empty):
+        successfulBookings = readCSV(bookings)
+    else:
+        print("Empty file")
+except:
+    print("No bookings")
+
+print("\n\n\nROOMS BOOKED: ")
+for i in successfulBookings:
+    print(f"\n\t - Room size {i.split('+')[1]} : {i.split('+')[0]}")
+
+print("\n\n\n")
+
+
