@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./proofOC",
+        "./proofOC/actions"
+    ]
+}
