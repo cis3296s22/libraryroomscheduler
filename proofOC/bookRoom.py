@@ -154,16 +154,11 @@ class TestApp(MDApp):
     def bookRoom(self, roomSize, timeS, roomNum, date, repoUrl):
         self.hide_results()
         dateString = self.transformData(timeS, roomNum, date)
-        if (roomSize == ''):
-            self.display_results('Please select your room size')
-            return False
         if(dateString==None or (roomSize!="small" and roomSize!="large")):
             self.display_results('Incorrect Entry/Format')
             return False
 
         # save booking to file
-
-
         try:
             repo = RepoCommunicator(repoUrl, self.repoPath)
         except RepositoryConfigurationException as e:
