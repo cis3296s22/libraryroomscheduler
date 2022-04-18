@@ -80,15 +80,24 @@
                     text: 'No time chosen'
                     halign: 'right'
 
-        Button:
-            id: submit
-            text: 'Submit'
-            on_press: app.bookRoom(roomSize.text, time.text, roomNumber.text, date.text, repoUrl.text)
-        
-        Button:
-            id: show_reservations
-            text: 'Show Your Reservations'
-            on_press: app.show_reservations()
+        GridLayout:
+            cols: 2
+            AnchorLayout:
+                anchor_x: 'left'
+                MDFillRoundFlatButton:
+                    font_size: "18sp"
+                    id: show_reservations
+                    text: 'Show Your Reservations'
+                    on_press: app.show_reservations()
+            AnchorLayout:  
+                anchor_x: 'right'  
+                MDFillRoundFlatButton:
+                    markup: True
+                    text: '[b]Submit[/b]'
+                    font_size: "18sp"
+                    id: submit
+                    on_press: app.bookRoom(roomSize.text, time.text, roomNumber.text, date.text, repoUrl.text)
+            
 <P@Popup>:        
     Label:
         text: app.read_reservations()
