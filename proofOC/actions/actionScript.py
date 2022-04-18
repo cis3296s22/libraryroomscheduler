@@ -18,20 +18,23 @@ def convertDate(date, time):
     return selectTime
 
 def readCSV(bookings):
-    # Grab the date and the new day that just opened up
+    # Grab the date and the dates that can be booked for
     currentDate = dt.date.today()
     smallNewDate = str(currentDate + dt.timedelta(days=2))
     largeNewDate = str(currentDate + dt.timedelta(days=3))
 
+    # Grab the user credentials from the csv file
     userN = bookings.iloc[0]['date']
     passW = bookings.iloc[0]['time']
 
+    # Update the dataframe by dropping the credentials and including valid dates 
     bookings = bookings.drop([0]).reset_index(drop=True)
     bookings = bookings.loc[(bookings['date'] == smallNewDate) & (bookings['size'] =='small') | (bookings['date'] == largeNewDate) & (bookings['size'] =='large')]
     bookings = bookings.reset_index(drop=True)
 
     finalBookings=[]
 
+    # SHOULD only be 
     for size in ['small', 'large']:
         index = bookings.index[bookings['size'] == size].tolist()
         if(len(index)>0):
@@ -49,7 +52,9 @@ def readCSV(bookings):
         print("No Rooms to Book for")
 
 successfulBookings = []
+
 try: 
+    # Store the csv in a pandas dataframe 
     bookings = pd.read_csv('bookings.csv', names=["date", "time", "size"])
     if(not bookings.empty):
         successfulBookings = readCSV(bookings)
@@ -59,9 +64,10 @@ except:
     print("No bookings")
 
 print("\n\n\nROOMS BOOKED: ")
-for i in successfulBookings:
-    print(f"\n\t - Room size {i.split('+')[1]} : {i.split('+')[0]}")
 
-print("\n\n\n")
+if(successfulBookings):
+    
+    for i in successfulBookings:
+        print(f"\n\t - Room size {i.split('+')[1]} : {i.split('+')[0]}")
 
-
+    print("\n\n\n")
