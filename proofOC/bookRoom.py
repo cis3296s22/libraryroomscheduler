@@ -22,14 +22,15 @@ import os
 import sys
 import datetime
 import calendar
-from proofOC.loginWindow import login
+from loginWindow import login
 import csv
 
-from proofOC.BookingBuilder import BookingBuilder, BookingCreationException
-from proofOC.RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
+from BookingBuilder import BookingBuilder, BookingCreationException
+from RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
 
 def configurePath(execPath: str):
         print("PATH: ", execPath)
+        print("CWD: ", os.getcwd())
         # TODO change the way's it's checking where it's running from "exe/dist" OR WHEN running 'python3 bookRoom.py' make the user include an argument
         if "dist" in execPath:
             print("RUNNING FROM EXE")
@@ -94,14 +95,14 @@ class TestApp(MDApp):
     
     def read_reservations(self):
         self.fileName = "bookings.csv"
-        self.fullPath = f"local_repo/{self.fileName}"
+        self.fullPath = f"{self.repoPath}/{self.fileName}"
         count = 0
         content = ""
         with open(self.fullPath, "r") as f:
          reader = csv.reader(f)
          for line in reader:
             if (count != 0):
-                 print(line)
+                #  print(line)
                  content = content + " ".join(map(str, line)) + "\n"
             count = count+1
         return content        
@@ -126,7 +127,7 @@ class TestApp(MDApp):
             time = time if time[0] != '0' else time[1:] # removes leading zero if present
 
             selectTime = (f"{time} {weekday}, {fullDate} - {result[1]} - Available")
-            print(selectTime)
+            # print(selectTime)
             return selectTime
         except:
             return None
