@@ -22,8 +22,8 @@ class RepoCommunicator:
     """
     self.remoteRepoUrl = remoteRepoUrl
     self.localPath = localPath
-    self.workflowPath = localPath + "/.github/workflows"
-    self.actionsPath = localPath + "/scripts"
+    self.workflowPath = f"{localPath}/.github/workflows"
+    self.actionsPath = f"{localPath}/scripts"
     self.logger = logging.getLogger("appLog")
 
     if not os.path.exists(localPath):
@@ -80,18 +80,17 @@ class RepoCommunicator:
 
     # always copy the latest files
     try:
-      os.popen('cp proofOC/actions/main.yml ' + self.workflowPath)
-      os.popen('cp proofOC/actions/actionScript.py ' + self.actionsPath)
-      os.popen('cp proofOC/actions/TraverseSite.py ' + self.actionsPath)
-      os.popen('cp proofOC/actions/requirements.txt ' + self.actionsPath)
+      os.popen(f'cp {self.localPath}/../proofOC/actions/main.yml {self.workflowPath}')
+      os.popen(f'cp {self.localPath}/../proofOC/actions/actionScript.py {self.actionsPath}')
+      os.popen(f'cp {self.localPath}/../proofOC/actions/TraverseSite.py {self.actionsPath}')
+      os.popen(f'cp {self.localPath}/../proofOC/actions/requirements.txt {self.actionsPath}')
+
     except:
       self.logger.exception("Error copying github action files to local repository")
       raise RepositoryConfigurationException("Error creating github action files. See app.log for more details")
 
 
-    
-    
-
+  
 
   def addFile(self, fileName):
     """
