@@ -3,3 +3,4 @@ personas/
 venv/
 local_repo/
 app.log
+**/__pycache__/
