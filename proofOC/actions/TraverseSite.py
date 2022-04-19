@@ -10,7 +10,39 @@ from selenium.webdriver.common.by import By
 
 
 class TraverseSite:
+    """
+    Traverses the library's website
+
+    . . .
+
+    Attributes
+    ----------
+    link: str
+        The URL to the library website
+    driver: selenium.webdriver
+        A Chrome webdriver instance
+
+    Methods
+    ----------
+    bookRoom(dateStringPath: str, userN: str, passW: str)
+        Attempts to book the requested room with the credentials provided
+
+    findRoom(dateTime: str)
+        Goes to the charles website and see what rooms are available and return one for the booking.
+        Usually first room available at the specified time/date
+
+    """
     def __init__(self, link: str):
+        """
+        Creates an instance of the TraverseSite class
+
+        . . .
+
+        Parameters
+        ----------
+        link: str
+            The URL to the library website
+        """
         self.link = link
         self.service = Service(executable_path=ChromeDriverManager().install())
         chromeOptions = Options()
@@ -18,6 +50,24 @@ class TraverseSite:
         self.driver = webdriver.Chrome(service=self.service, options = chromeOptions)
 
     def bookRoom(self, dateStringPath, userN, passW):
+        """
+        Attempts to book the requested room with the credentials provided
+
+        . . .
+
+        Parameters
+        ----------
+        dateStringPath: str
+            The date of the booking as a string
+        userN: str
+            The username of the person booking the room
+        passW: str
+            The password of the user booking the room
+
+        Returns
+        ----------
+        True if successful, otherwise False
+        """
         self.driver.get(self.link)
         try:
             timeOption = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, dateStringPath)))
@@ -69,9 +119,22 @@ class TraverseSite:
         jadaSucks.click()
         return True
 
-
-    # Go to the charles website and see what rooms are available and return one for the booking (usually first room available at the specified time/date)
     def findRoom(self, dateTime):
+        """
+        Go to the charles website and see what rooms are available and return one for the booking.
+        Usually first room available at the specified time/date
+
+        . . .
+
+        Parameters
+        ----------
+        dateTime: str
+            The date of the booking as a string
+
+        Returns
+        ----------
+        A string with room information if it exists, else None
+        """
 
         rooms = []
         grabRoom = False

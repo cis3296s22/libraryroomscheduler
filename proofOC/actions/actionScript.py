@@ -1,13 +1,25 @@
-
-
-
-
 import datetime as dt
 import calendar
 from TraverseSite import TraverseSite
 
 
 def convertDate(date, time):
+    """
+    Converts a date and time into a string
+
+    . . .
+
+    Parameters
+    ----------
+    date: datetime.date
+      The date of the booking
+    time: datetime.time
+      The time of the booking
+
+    Returns
+    ----------
+    A string of the date and time along with the day of the week
+    """
     select = dt.datetime.strptime(date, "%Y-%m-%d").date()
     fullDate = select.strftime("%B %-d, %Y")
     weekday = calendar.day_name[select.weekday()]
