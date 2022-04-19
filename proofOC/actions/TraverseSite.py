@@ -10,11 +10,6 @@ from selenium.webdriver.common.by import By
 
 
 class TraverseSite:
-    def __init__(self, loginLink, libraryLink):
-        self.l1 = loginLink
-        self.l2 = libraryLink
-        self.smallRooms=['311', '317', '318', '319', '327', '348', '349', '383', '384', '385', '386', '389', '390', '391', '392', '403', '404', '411', '412', '413', '414', '415', '416', '417', '418', '422', '424', '426', '427']
-        self.largeRooms=['387', '402', '405', '425']
     """
     Traverses the library's website
 
@@ -22,22 +17,31 @@ class TraverseSite:
 
     Attributes
     ----------
-    link: str
-        The URL to the library website
+    l1: str
+        The URL to the tuportal login page
+    l2: str
+        The URL to the charles library page
     driver: selenium.webdriver
         A Chrome webdriver instance
+    smallRooms: 
+        A list of all the small rooms that can be booked at Charles Library
+    largeRooms: 
+        A list of all the large rooms that can be booked at Charles Library
+
 
     Methods
     ----------
-    bookRoom(dateStringPath: str, userN: str, passW: str)
-        Attempts to book the requested room with the credentials provided
+    bookRoom(bookings: str[], userN: str, passW: str)
+        Attempts to book the requested rooms with the credentials provided
 
-    findRoom(dateTime: str)
-        Goes to the charles website and see what rooms are available and return one for the booking.
-        Usually first room available at the specified time/date
+    firstAvailable(dateStringPath: str)
+        Goes to the charles website and books the request room with the string provided
+
+    login(userN: str, passW: str)
+        Goes to the tuportal and logins with the credentials provided
 
     """
-    def __init__(self, link: str):
+    def __init__(self, loginLink, libraryLink):
         """
         Creates an instance of the TraverseSite class
 
@@ -45,10 +49,16 @@ class TraverseSite:
 
         Parameters
         ----------
-        link: str
-            The URL to the library website
+        loginLink: str
+            The URL to the tuportal login page
+        libraryLink: str
+            The URL to the charles library page
         """
-        self.link = link
+        self.l1 = loginLink
+        self.l2 = libraryLink
+        self.smallRooms=['311', '317', '318', '319', '327', '348', '349', '383', '384', '385', '386', '389', '390', '391', '392', '403', '404', '411', '412', '413', '414', '415', '416', '417', '418', '422', '424', '426', '427']
+        self.largeRooms=['387', '402', '405', '425']
+
         self.service = Service(executable_path=ChromeDriverManager().install())
         chromeOptions = Options()
         chromeOptions.headless = True
@@ -71,7 +81,7 @@ class TraverseSite:
 
         Returns
         ----------
-        True if successful, otherwise False
+        A list of the bookings that were made as strings
         """
         successfulBookings=[]
         self.login(userN, passW)
@@ -106,6 +116,20 @@ class TraverseSite:
                     
 
     def firstAvailable(self,dateStringPath):
+        """
+        Goes to the charles website and books the request room with the string provided
+
+        . . .
+
+        Parameters
+        ----------
+        dateStringPath
+            The string with the booking information
+
+        Returns
+        ----------
+        True if successful, False if otherwise
+        """
         try:
             timeOption = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, dateStringPath)))
             timeOption.click()
@@ -140,6 +164,22 @@ class TraverseSite:
         return True
 
     def login(self,userN, passW):
+        """
+        Goes to the charles website and logs in with the given credentials
+
+        . . .
+
+        Parameters
+        ----------
+        userN: str
+            The username of the person booking the room
+        passW: str
+            The password of the user booking the room
+
+        Returns
+        ----------
+        True if successful, False if otherwise
+        """
         self.driver.get(self.l1)
         try:
             # Log in  
@@ -158,4 +198,3 @@ class TraverseSite:
             return False
 
         return True
-

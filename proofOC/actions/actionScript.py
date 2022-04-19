@@ -54,6 +54,7 @@ def readCSV(bookings):
             dateTime = convertDate(bookings.iloc[index]['date'], bookings.iloc[index]['time'])
             sizeOption = bookings.iloc[index]['size']
             finalBookings.append(f"{dateTime}+{sizeOption}") 
+            
 
     print("Making bookings for: \n{}".format(finalBookings))
 
