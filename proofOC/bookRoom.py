@@ -202,8 +202,14 @@ class TestApp(MDApp):
 
 if __name__ == '__main__':
     logger = logging.getLogger("appLog")
-    # if you're running it right this is either the venv bin or the exe. either way we gotta go up 2 levels
-    fh = logging.FileHandler(f'{str(os.path.dirname(sys.executable))}/../../app.log')
+    path = str(os.path.dirname(sys.executable))
+    fh = None
+    if "venv" in path or "exe" in path:
+        # if you're running it right this is either the venv bin or the exe. either way we gotta go up 2 levels
+        fh = logging.FileHandler(f'{path}/../../app.log')
+    else:
+        # otherwise system python. run from where we were called
+        fh = logging.FileHandler(f'app.log')
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
     fh.setFormatter(formatter)
     logger.setLevel(logging.DEBUG)
