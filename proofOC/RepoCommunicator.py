@@ -89,6 +89,8 @@ class RepoCommunicator:
       self.logger.exception("Error copying github action files to local repository")
       raise RepositoryConfigurationException("Error creating github action files. See app.log for more details")
 
+    self.logger.debug("Repo created!")
+
 
   
 

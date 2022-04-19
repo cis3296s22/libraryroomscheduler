@@ -29,15 +29,17 @@ from BookingBuilder import BookingBuilder, BookingCreationException
 from RepoCommunicator import RepoCommunicator, remoteRepoConfigured, RepositoryConfigurationException
 
 def configurePath(execPath: str):
-        print("PATH: ", execPath)
-        print("CWD: ", os.getcwd())
+        # TODO find out why these specifically don't log
+        logger = logging.getLogger("appLog")
+        logger.debug(f"PATH: {execPath}")
+        logger.debug(f"CWD: {os.getcwd()}")
         # TODO change the way's it's checking where it's running from "exe/dist" OR WHEN running 'python3 bookRoom.py' make the user include an argument
         if "dist" in execPath:
-            print("RUNNING FROM EXE")
+            logger.debug("RUNNING FROM EXE")
             return f"{execPath}/../../local_repo"
 
         else:
-            print("RUNNNG FROM CLI")
+            logger.debug("RUNNNG FROM CLI")
             return "local_repo"
 
 
@@ -200,7 +202,8 @@ class TestApp(MDApp):
 
 if __name__ == '__main__':
     logger = logging.getLogger("appLog")
-    fh = logging.FileHandler('app.log')
+    # if you're running it right this is either the venv bin or the exe. either way we gotta go up 2 levels
+    fh = logging.FileHandler(f'{str(os.path.dirname(sys.executable))}/../../app.log')
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
     fh.setFormatter(formatter)
     logger.setLevel(logging.DEBUG)
