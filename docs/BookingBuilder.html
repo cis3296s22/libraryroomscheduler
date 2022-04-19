@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module BookingBuilder</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>BookingBuilder</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/rpalko/Documents/temple/libraryroomscheduler/proofOC/BookingBuilder.py">/Users/rpalko/Documents/temple/libraryroomscheduler/proofOC/BookingBuilder.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="logging.html">logging</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#Exception">builtins.Exception</a>(<a href="builtins.html#BaseException">builtins.BaseException</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="BookingBuilder.html#BookingCreationException">BookingCreationException</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="BookingBuilder.html#BookingBuilder">BookingBuilder</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="BookingBuilder">class <strong>BookingBuilder</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#BookingBuilder">BookingBuilder</a>(username:&nbsp;str,&nbsp;password:&nbsp;str,&nbsp;bookingP:&nbsp;str)<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;to&nbsp;represent&nbsp;the&nbsp;CSV&nbsp;file&nbsp;used&nbsp;to&nbsp;kepe&nbsp;track&nbsp;of&nbsp;library&nbsp;bookings<br>
+&nbsp;<br>
+.&nbsp;.&nbsp;.<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+fileName:&nbsp;str<br>
+&nbsp;&nbsp;Name&nbsp;of&nbsp;the&nbsp;.csv&nbsp;file.&nbsp;Always&nbsp;'bookings.csv'<br>
+fullPath:&nbsp;str<br>
+&nbsp;&nbsp;The&nbsp;full&nbsp;system&nbsp;path&nbsp;needed&nbsp;to&nbsp;access&nbsp;the&nbsp;file<br>
+logger:&nbsp;Logger<br>
+&nbsp;&nbsp;A&nbsp;logging&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;log&nbsp;events<br>
+&nbsp;<br>
+Methods<br>
+----------<br>
+<a href="#BookingBuilder-addBooking">addBooking</a>(date:str,&nbsp;time:str,&nbsp;size:str)<br>
+&nbsp;&nbsp;Adds&nbsp;a&nbsp;booking&nbsp;to&nbsp;the&nbsp;csv&nbsp;with&nbsp;each&nbsp;value&nbsp;wrapped&nbsp;in&nbsp;double&nbsp;quotes.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="BookingBuilder-__init__"><strong>__init__</strong></a>(self, username: str, password: str, bookingP: str)</dt><dd><tt>Creates&nbsp;a&nbsp;bookings&nbsp;history&nbsp;file&nbsp;only&nbsp;if&nbsp;it&nbsp;doesn't&nbsp;exist.<br>
+The&nbsp;username&nbsp;and&nbsp;password&nbsp;are&nbsp;stored&nbsp;on&nbsp;the&nbsp;first&nbsp;line&nbsp;and&nbsp;used&nbsp;to&nbsp;<br>
+automate&nbsp;the&nbsp;scheduling.<br>
+&nbsp;<br>
+.&nbsp;.&nbsp;.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;username:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;Temple&nbsp;username&nbsp;of&nbsp;whomever&nbsp;is&nbsp;booking&nbsp;the&nbsp;library&nbsp;room<br>
+&nbsp;&nbsp;password:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;password&nbsp;associated&nbsp;with&nbsp;the&nbsp;Temple&nbsp;username<br>
+&nbsp;&nbsp;bookingP:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;filepath&nbsp;where&nbsp;the&nbsp;.csv&nbsp;file&nbsp;is&nbsp;located</tt></dd></dl>
+
+<dl><dt><a name="BookingBuilder-addBooking"><strong>addBooking</strong></a>(self, date: str, time: str, size: str)</dt><dd><tt>Adds&nbsp;a&nbsp;booking&nbsp;to&nbsp;the&nbsp;csv&nbsp;with&nbsp;each&nbsp;value&nbsp;wrapped&nbsp;in&nbsp;double&nbsp;quotes.<br>
+&nbsp;<br>
+.&nbsp;.&nbsp;.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+date:&nbsp;str<br>
+&nbsp;&nbsp;The&nbsp;date&nbsp;of&nbsp;the&nbsp;booking&nbsp;as&nbsp;a&nbsp;string<br>
+time:&nbsp;str<br>
+&nbsp;&nbsp;The&nbsp;time&nbsp;of&nbsp;the&nbsp;booking&nbsp;as&nbsp;a&nbsp;string<br>
+size:&nbsp;str<br>
+&nbsp;&nbsp;The&nbsp;size&nbsp;of&nbsp;the&nbsp;room&nbsp;to&nbsp;be&nbsp;booked.&nbsp;Typically&nbsp;either&nbsp;small&nbsp;or&nbsp;large.<br>
+&nbsp;<br>
+Returns<br>
+----------<br>
+None</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="BookingCreationException">class <strong>BookingCreationException</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;custom&nbsp;exception&nbsp;used&nbsp;with&nbsp;the&nbsp;<a href="#BookingBuilder">BookingBuilder</a>&nbsp;class.&nbsp;<br>
+Used&nbsp;to&nbsp;send&nbsp;more&nbsp;specific&nbsp;error&nbsp;messages&nbsp;back&nbsp;to&nbsp;the&nbsp;caller&nbsp;where&nbsp;things&nbsp;failed.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="BookingBuilder.html#BookingCreationException">BookingCreationException</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="BookingCreationException-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="BookingCreationException-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="BookingCreationException-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="BookingCreationException-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="BookingCreationException-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="BookingCreationException-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="BookingCreationException-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="BookingCreationException-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="BookingCreationException-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="BookingCreationException-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#BookingCreationException-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

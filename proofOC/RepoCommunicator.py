@@ -5,20 +5,73 @@ import os
 
 
 def remoteRepoConfigured(repoPath: str):
+  """
+  Determines if we've saved repo configuration before and returns the remote URL if so
+
+  . . .
+
+  Parameters
+  ----------
+  repoPath: str
+    The filepath of the local repo
+
+  Returns
+  ----------
+    A string if the remote URL if found, or an empty string otherwise
+  """
   if os.path.exists(f"{repoPath}/remoteURL.txt"):
     with open(f"{repoPath}/remoteURL.txt", "r") as f:
       return f.readline().rstrip()
   return ""
 
 class RepositoryConfigurationException(Exception):
+  """
+  A custom exception used with the RepoCommunicator class. 
+  Used to send more specific error messages back to the caller where things failed.
+  """
   pass
 
 class RepoCommunicator:
+  """
+  A class to represent our git repo as an object in the application
+  
+  . . .
+
+  Attributes
+  ----------
+  remoteRepoUrl: str
+    The git URL of the remote repository
+  localPath: str
+    The local system path needed to access the repo
+  workflowPath: str
+    The system path for Github workflows
+  actionsPath: str
+    The system path for Github actions
+  logger: Logger
+    A logging object to log events
+
+  Methods
+  ----------
+  addFile(fileName: str)
+    Stages a file for commit
+
+  pushData()
+    Pushes the local repo up to GitHub 
+  """
 
   def __init__(self, remoteRepoUrl: str, localPath: str):
     """
     Instantiates the local repository to comminucate with GitHub.
-    If the local repo has not been created, it will create one.
+    If the local repo has not been created, it will create one along with the necessary files.
+
+    . . .
+
+    Parameters
+    ----------
+      remoteRepoUrl: str
+        The git URL of the remote repository
+      localPath: str
+        The local system path needed to access the repo
     """
     self.remoteRepoUrl = remoteRepoUrl
     self.localPath = localPath
@@ -97,12 +150,34 @@ class RepoCommunicator:
   def addFile(self, fileName):
     """
     Stages a file for commit
+
+    . . .
+
+    Parameters
+    ----------
+    fileName: str
+      The date of the file being added to the staged commit
+
+    Returns
+    ----------
+    None
     """
     self.repo.index.add(fileName)
 
   def pushData(self):
     """
     Pushes the local repo up to GitHub
+
+    . . .
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    ----------
+    None
+  
     """
     try:
       self.repo.index.commit('Update bookings.')
