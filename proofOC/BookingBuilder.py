@@ -37,12 +37,23 @@ class BookingBuilder:
       self.logger.error("Unable to add to file:")
       raise BookingCreationException("Unable to add booking information to file!")
 
-def removeBooking(self):
-    try:
-        with open(self.fullPath, "r+") as f:
-            lines = f.readlines()
-            lines.pop(1)
-            f.writelines(lines)
-    except:
-      self.logger.error("Unable to change the file:")
-      raise BookingCreationException("Unable to change booking information in the file!")
+  def removeBooking(self, date:str, time:str, size:str):
+      """
+      Finds and removes a booking from the csv file.
+      """
+      string = (f'{date},{time},{size}\n')
+      
+      try:
+          with open(self.fullPath, "r+") as f:
+              lines = f.readlines()
+              # delete the line with the booking 
+          for line in lines:
+                  print(line)
+                  if (line == string):
+                      index = lines.index(string)
+                      lines.pop(index)
+          f.truncate(0)
+          f.writelines(lines)
+      except:
+          self.logger.error("Unable to modify the file.")
+          raise BookingCreationException("Unable to change booking information in the file.")

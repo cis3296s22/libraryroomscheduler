@@ -1,6 +1,7 @@
 # https://kivy.org/doc/stable/guide/packaging-osx.html
 
 import logging
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
@@ -134,7 +135,6 @@ class TestApp(MDApp):
 
         # save booking to file
 
-
         try:
             repo = RepoCommunicator(repoUrl, self.repoPath)
         except RepositoryConfigurationException as e:
@@ -171,14 +171,26 @@ class TestApp(MDApp):
         self.display_results('Data sent to your repo!')
         return True
     
+    
+    
     def cancelRoom (self, roomSize, timeS, roomNum, date, repoUrl):
+        self.hide_results()
+        dateString = self.transformData(timeS, roomNum, date)
+        if(dateString==None or (roomSize!="small" and roomSize!="large")):
+            self.display_results('Incorrect Entry/Format')
+            return False
+
+        timeS = timeS.strip().lower()
+        timeS = "".join(timeS.split()) # removes any inner whitespace
+        timeS = timeS if timeS[0] != '0' else timeS[1:] # removes leading zero if present
+        
         try:
             bookingToCancel = BookingBuilder(self.userN, self.passW, self.repoPath)
-            bookingToCancel.removeBooking()
+            bookingToCancel.removeBooking(date, timeS, roomSize)
         except BookingCreationException as e:
             self.display_results(f'{e}')
             return False
-
+        
         self.display_results('Your booking was cancelled!')
         return True
 
