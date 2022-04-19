@@ -3,7 +3,7 @@
 For Temple students who need to schedule rooms in Charles Library farther in advance, the Library Room Auto-Scheduler is a room booking app that allows you to automatically schedule rooms as soon as they’re available. Unlike Charles’s own scheduler, our product allows proactive students to book rooms more than 2-3 days in advance without needing to navigate through the library’s appointment interface.
 
 ![This is a screenshot.](images/login0.2.png)
-![This is a screenshot.](images/booking0.2.png)
+![This is a screenshot.](images/booking0.3.png)
 
 # How to run
 
@@ -67,7 +67,17 @@ In both programs, the user will be prompted for their TU credentials to login an
 
 ---
 
-### BUILD EXECUTABLE
+### Testing
+
+- ***From the proofOC directory***
+- For coverage report and html document for test output: 
+  - Run ```coverage run -m pytest tests --html=report.html --self-contained-html --user YOUR_TU_USERNAME --passW YOUR_PASSWORD```
+  - Run ```coverage report -m```
+- For individual tests:
+  - Run ```pytest tests/{TESTFILE}```
+
+
+### Building the Executable
 
 - From exe folder:
 

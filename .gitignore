@@ -1,5 +1,7 @@
 personas/
-.DS_Store
+**/.DS_Store
 venv/
 local_repo/
 app.log
+**/__pycache__/
+.vscode/

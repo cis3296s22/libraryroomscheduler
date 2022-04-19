@@ -5,25 +5,78 @@ import os
 
 
 def remoteRepoConfigured(repoPath: str):
+  """
+  Determines if we've saved repo configuration before and returns the remote URL if so
+
+  . . .
+
+  Parameters
+  ----------
+  repoPath: str
+    The filepath of the local repo
+
+  Returns
+  ----------
+    A string if the remote URL if found, or an empty string otherwise
+  """
   if os.path.exists(f"{repoPath}/remoteURL.txt"):
     with open(f"{repoPath}/remoteURL.txt", "r") as f:
       return f.readline().rstrip()
   return ""
 
 class RepositoryConfigurationException(Exception):
+  """
+  A custom exception used with the RepoCommunicator class. 
+  Used to send more specific error messages back to the caller where things failed.
+  """
   pass
 
 class RepoCommunicator:
+  """
+  A class to represent our git repo as an object in the application
+  
+  . . .
+
+  Attributes
+  ----------
+  remoteRepoUrl: str
+    The git URL of the remote repository
+  localPath: str
+    The local system path needed to access the repo
+  workflowPath: str
+    The system path for Github workflows
+  actionsPath: str
+    The system path for Github actions
+  logger: Logger
+    A logging object to log events
+
+  Methods
+  ----------
+  addFile(fileName: str)
+    Stages a file for commit
+
+  pushData()
+    Pushes the local repo up to GitHub 
+  """
 
   def __init__(self, remoteRepoUrl: str, localPath: str):
     """
     Instantiates the local repository to comminucate with GitHub.
-    If the local repo has not been created, it will create one.
+    If the local repo has not been created, it will create one along with the necessary files.
+
+    . . .
+
+    Parameters
+    ----------
+      remoteRepoUrl: str
+        The git URL of the remote repository
+      localPath: str
+        The local system path needed to access the repo
     """
     self.remoteRepoUrl = remoteRepoUrl
     self.localPath = localPath
-    self.workflowPath = localPath + "/.github/workflows"
-    self.actionsPath = localPath + "/scripts"
+    self.workflowPath = f"{localPath}/.github/workflows"
+    self.actionsPath = f"{localPath}/scripts"
     self.logger = logging.getLogger("appLog")
 
     if not os.path.exists(localPath):
@@ -80,30 +133,57 @@ class RepoCommunicator:
 
     # always copy the latest files
     try:
-      os.popen('cp proofOC/actions/main.yml ' + self.workflowPath)
-      os.popen('cp proofOC/actions/actionScript.py ' + self.actionsPath)
-      os.popen('cp proofOC/actions/TraverseSite.py ' + self.actionsPath)
-      os.popen('cp proofOC/actions/requirements.txt ' + self.actionsPath)
+      os.popen(f'cp {self.localPath}/../proofOC/actions/main.yml {self.workflowPath}')
+      os.popen(f'cp {self.localPath}/../proofOC/actions/actionScript.py {self.actionsPath}')
+      os.popen(f'cp {self.localPath}/../proofOC/actions/TraverseSite.py {self.actionsPath}')
+      os.popen(f'cp {self.localPath}/../proofOC/actions/requirements.txt {self.actionsPath}')
+
     except:
       self.logger.exception("Error copying github action files to local repository")
       raise RepositoryConfigurationException("Error creating github action files. See app.log for more details")
 
+    self.logger.debug("Repo created!")
 
-    
-    
 
+  
 
   def addFile(self, fileName):
     """
     Stages a file for commit
+
+    . . .
+
+    Parameters
+    ----------
+    fileName: str
+      The date of the file being added to the staged commit
+
+    Returns
+    ----------
+    None
     """
     self.repo.index.add(fileName)
 
   def pushData(self):
     """
     Pushes the local repo up to GitHub
+
+    . . .
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    ----------
+    None
+  
     """
-    self.repo.index.commit('Update bookings.')
+    try:
+      self.repo.index.commit('Update bookings.')
+    except Exception:
+      self.logger.exception("Unable to commit to the repository")
+      raise RepositoryConfigurationException("Unable to commit to the repository")
     try:
       self.repo.remotes.origin.push()
     except Exception:
