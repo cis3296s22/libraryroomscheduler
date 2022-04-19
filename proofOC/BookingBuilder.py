@@ -33,7 +33,6 @@ class BookingBuilder:
     try:
       with open(self.fullPath, "a+") as f:
         f.write(f'{date},{time},{size}\n')
-      self.logger.debug("Added datetime to booking csv")
     except:
       self.logger.error("Unable to add to file:")
       raise BookingCreationException("Unable to add booking information to file!")
