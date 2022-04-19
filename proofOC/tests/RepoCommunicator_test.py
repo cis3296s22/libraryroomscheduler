@@ -3,7 +3,7 @@ import shutil
 import os
 
 from unittest import mock, TestCase
-from proofOC.RepoCommunicator import RepoCommunicator, RepositoryConfigurationException, remoteRepoConfigured
+from RepoCommunicator import RepoCommunicator, RepositoryConfigurationException, remoteRepoConfigured
 
 class Test_RepoCommunicator(TestCase):
 
@@ -20,7 +20,7 @@ class Test_RepoCommunicator(TestCase):
     else: 
       os.remove(self.LOCAL_PATH_NAME)
 
-  @mock.patch('proofOC.RepoCommunicator.git')
+  @mock.patch('RepoCommunicator.git')
   def test_repo_create_from_empty(self, mock_git):
     p = mock.PropertyMock(return_value=False)
     type(mock_git.Repo.clone_from.return_value).bare = p
@@ -37,7 +37,7 @@ class Test_RepoCommunicator(TestCase):
 
     assert "Unable to create local repository" in str(test_exception.value)
 
-  @mock.patch('proofOC.RepoCommunicator.git')
+  @mock.patch('RepoCommunicator.git')
   def test_repo_create_existing_path(self, mock_git):
     # create directory and file from it
     os.mkdir(self.LOCAL_PATH_NAME)
