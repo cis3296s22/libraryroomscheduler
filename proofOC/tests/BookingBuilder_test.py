@@ -3,7 +3,7 @@ import shutil
 import os
 
 from unittest import TestCase
-from proofOC.BookingBuilder import BookingBuilder, BookingCreationException
+from BookingBuilder import BookingBuilder, BookingCreationException
 
 class Test_BookingBuilder(TestCase):
 
