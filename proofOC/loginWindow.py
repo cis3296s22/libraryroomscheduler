@@ -8,6 +8,20 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 def login(*creds: str):
+    """
+    Used to collect credentials for the application to book rooms at a later date
+
+    . . .
+
+    Parameters
+    ----------
+    creds: str, optional
+        Credentials to attempt a login with automatically
+
+    Returns
+    ----------
+    The Temple username and password used to log in
+    """
     start = time.time()
     userN = ""
     passW = ""

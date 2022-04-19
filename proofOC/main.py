@@ -79,6 +79,24 @@ def login(user, passW, dateString, roomSize):
 
 
 def transformData(timeS, roomNum, date):
+    """
+    Creates a formatted string from the user selections to book a room
+
+    . . .
+
+    Parameters
+    ----------
+    timeS: str
+        A string representation of the time selected
+    roomNum: str
+        The room number selected
+    date: str
+        A string representation of the date selected
+
+    Returns
+    ----------
+    A formatted string if successful, or None if not
+    """
     select = datetime.datetime.strptime(date, "%m-%d-%Y").date()
     fullDate = select.strftime("%B %d, %Y")
     weekday = calendar.day_name[select.weekday()]

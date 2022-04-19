@@ -10,16 +10,54 @@ from selenium.webdriver.common.by import By
 
 
 class TraverseSite:
+<<<<<<< HEAD
     def __init__(self, loginLink, libraryLink):
         self.l1 = loginLink
         self.l2 = libraryLink
         self.smallRooms=['311', '317', '318', '319', '327', '348', '349', '383', '384', '385', '386', '389', '390', '391', '392', '403', '404', '411', '412', '413', '414', '415', '416', '417', '418', '422', '424', '426', '427']
         self.largeRooms=['387', '402', '405', '425']
+=======
+    """
+    Traverses the library's website
+
+    . . .
+
+    Attributes
+    ----------
+    link: str
+        The URL to the library website
+    driver: selenium.webdriver
+        A Chrome webdriver instance
+
+    Methods
+    ----------
+    bookRoom(dateStringPath: str, userN: str, passW: str)
+        Attempts to book the requested room with the credentials provided
+
+    findRoom(dateTime: str)
+        Goes to the charles website and see what rooms are available and return one for the booking.
+        Usually first room available at the specified time/date
+
+    """
+    def __init__(self, link: str):
+        """
+        Creates an instance of the TraverseSite class
+
+        . . .
+
+        Parameters
+        ----------
+        link: str
+            The URL to the library website
+        """
+        self.link = link
+>>>>>>> main
         self.service = Service(executable_path=ChromeDriverManager().install())
         chromeOptions = Options()
         chromeOptions.headless = True
         self.driver = webdriver.Chrome(service=self.service, options = chromeOptions)
 
+<<<<<<< HEAD
     def bookRoom(self, bookings, userN, passW):
         successfulBookings=[]
         self.login(userN, passW)
@@ -54,6 +92,28 @@ class TraverseSite:
                     
 
     def firstAvailable(self,dateStringPath):
+=======
+    def bookRoom(self, dateStringPath, userN, passW):
+        """
+        Attempts to book the requested room with the credentials provided
+
+        . . .
+
+        Parameters
+        ----------
+        dateStringPath: str
+            The date of the booking as a string
+        userN: str
+            The username of the person booking the room
+        passW: str
+            The password of the user booking the room
+
+        Returns
+        ----------
+        True if successful, otherwise False
+        """
+        self.driver.get(self.link)
+>>>>>>> main
         try:
             timeOption = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, dateStringPath)))
             timeOption.click()
@@ -107,3 +167,55 @@ class TraverseSite:
 
         return True
 
+<<<<<<< HEAD
+=======
+    def findRoom(self, dateTime):
+        """
+        Go to the charles website and see what rooms are available and return one for the booking.
+        Usually first room available at the specified time/date
+
+        . . .
+
+        Parameters
+        ----------
+        dateTime: str
+            The date of the booking as a string
+
+        Returns
+        ----------
+        A string with room information if it exists, else None
+        """
+
+        rooms = []
+        grabRoom = False
+        roomIndex = 0
+        currentRoom = ""
+
+        self.driver.get(self.link)
+        try:
+            error = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, "//span[@class='fc-cell-text']")))
+        except:
+            print("ERROR NO ELEMENTS LOADED OR DONT EXIST")
+
+        # Fetch all elements with the XPATH "//span..." -> Retrieve all the room numbers, stored in rooms list
+        elements = self.driver.find_elements(by=By.XPATH, value="//span[@class='fc-cell-text']")
+        for i in elements:
+            rooms.append(i.text[0:3])
+
+
+        # Loop through rooms list and find a room that is 'available'
+        while(not grabRoom and roomIndex < len(rooms)):
+            try:
+                currentRoom = rooms[roomIndex]
+                dateString = (f"//a[@aria-label='{dateTime} - {currentRoom} - Available']")
+                timeOption = self.driver.find_element(By.XPATH, dateString)
+                print("Room " + currentRoom + " is available")
+                grabRoom = True
+                return dateString
+            
+            except:
+                print("Room " + currentRoom + " is not available")
+                roomIndex = roomIndex + 1
+        return None
+
+>>>>>>> main
