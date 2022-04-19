@@ -81,8 +81,10 @@ class TestApp(MDApp):
         time_selector.open()
 
     def on_checkbox_active(self, instance, value, Size):
-        if value:
+        if (value==True):
             self.root.ids.roomSize.text = Size
+        if (value==False):
+            self.root.ids.roomSize.text = ''
 
     def on_date_save(self, instance, value, date_range):
         self.root.ids.date.text = str(value)
@@ -159,8 +161,6 @@ class TestApp(MDApp):
             return False
 
         # save booking to file
-
-
         try:
             repo = RepoCommunicator(repoUrl, self.repoPath)
         except RepositoryConfigurationException as e:
