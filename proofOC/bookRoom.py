@@ -1,6 +1,7 @@
 # https://kivy.org/doc/stable/guide/packaging-osx.html
 
 import logging
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
@@ -491,8 +492,7 @@ class TestApp(MDApp):
         self.display_results('Data sent to your repo!')
         return True
     
-    
-        
+   
 
 if __name__ == '__main__':
     logger = logging.getLogger("appLog")
